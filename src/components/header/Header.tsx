@@ -8,6 +8,7 @@ import * as firebase from 'firebase/app';
 import 'firebase/auth';
 
 /** Custom Components */
+import MyDrawer from './MyDrawer';
 import GoogleAuth from '../Auth/GoogleAuth';
 import Notification from './Notification';
 import AccountIcon from './AccountIcon';
@@ -27,6 +28,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
+/** css */
 import './Header.css';
 
 
@@ -143,6 +145,7 @@ const Header: FC = () => {
         <div className={classes.grow} style={{ 'marginBottom': '75px' }}>
             <AppBar position="fixed">
                 <Toolbar>
+                    <MyDrawer />
                     <Link to={'/'} className="iconLink">
                         <Typography className={classes.title} variant="h6" noWrap>
                             Confrences
