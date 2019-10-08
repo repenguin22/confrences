@@ -20,7 +20,7 @@ const App: FC = () => {
             <Router>
                 <Switch>
                     <Route path="/" component={AgendaListNew} exact />
-                    <Route path="/new" component={AgendaListNew} exact />
+                    <Route path="/agenda/new" component={AgendaListNew} exact />
                 </Switch>
             </Router>
         </div>

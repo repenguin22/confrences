@@ -7,8 +7,8 @@ import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 
 /** action */
-import { Agenda, AllAgendaState } from '../../../../store/agenda/types';
-import { setAgendaList } from '../../../../store/agenda/action';
+import { Agenda, AllAgendaState } from '../../../../store/agenda/set/types';
+import { setAgendaList } from '../../../../store/agenda/set/action';
 
 export const useAgendaListNew = () => {
     const [loading, setLoading] = useState(false);
@@ -46,7 +46,6 @@ export const useAgendaListNew = () => {
                     agendaNewList.push(tmpAgenda);
                 });
             });
-            console.log(agendaNewList);
             dispatch(setAgendaList(agendaNewList));
             setLoading(false);
         } catch (error) {
