@@ -4,9 +4,11 @@ import { createStore, combineReducers } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 import { authReducer } from './auth/reducers';
+import { setAgendaReducer } from './agenda/reducers';
 
 const rootReducer = combineReducers({
-    auth: authReducer
+    auth: authReducer,
+    agenda: setAgendaReducer
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

@@ -1,4 +1,4 @@
-import { Auth, SIGN_IN, SIGN_OUT, AuthActionTypes } from "./types";
+import { Auth, SIGN_IN, SIGN_OUT, AuthActionTypes } from './types';
 
 const initialState: Auth = {
     uid: null,

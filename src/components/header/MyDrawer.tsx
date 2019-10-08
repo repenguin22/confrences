@@ -64,10 +64,10 @@ const MyDrawer: FC = () => {
                     </ListItem>
                 </Link>
                 <Divider />
-                <Link to="/theme/create" className="drawerLink">
-                    <ListItem button key="CreateTheme">
+                <Link to="/agenda/create" className="drawerLink">
+                    <ListItem button key="CreateAgenda">
                         <ListItemIcon><CreateIcon /></ListItemIcon>
-                        <ListItemText primary="CreateTheme" />
+                        <ListItemText primary="CreateAgenda" />
                     </ListItem>
                 </Link>
             </List>
