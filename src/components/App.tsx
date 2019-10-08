@@ -8,6 +8,7 @@ import { firebaseConfig } from '../firebase';
 
 /** Custom Components */
 import AgendaListNew from './agenda/agendaLists/agendaListNew/AgendaListNew';
+import AgendaCreate from './agenda/agendaCreate/AgendaCreate';
 
 /** Material UI Components */
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -21,6 +22,7 @@ const App: FC = () => {
                 <Switch>
                     <Route path="/" component={AgendaListNew} exact />
                     <Route path="/agenda/new" component={AgendaListNew} exact />
+                    <Route path="/agenda/create" component={AgendaCreate} exact />
                 </Switch>
             </Router>
         </div>
