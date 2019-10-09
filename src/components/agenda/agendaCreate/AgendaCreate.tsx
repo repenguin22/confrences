@@ -3,6 +3,7 @@ import React, { FC } from 'react';
 
 /** Custom Components */
 import Header from '../../header/Header';
+import { CustomSnackBar, SnackBarTypeVariation } from '../../common/CustomSnackBar';
 
 /** model */
 import { CreateAgendaForm } from '../../../store/agenda/put/types';
@@ -11,7 +12,7 @@ import { CreateAgendaForm } from '../../../store/agenda/put/types';
 import validation from '../../../utils/validation';
 
 /** useAgendaCreate */
-import { useAgendaCreate } from './useAgendaCreate';
+import { useAgendaCreate, ResultedCodeVariation } from './useAgendaCreate';
 
 /** Material UI Components */
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -30,6 +31,7 @@ import RemoveIcon from '@material-ui/icons/Remove';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -102,9 +104,9 @@ const AgendaCreate: FC = () => {
         }
     });
 
-    const [putAgendaCretae, loading, error] = useAgendaCreate();
+    const [putAgendaCretae, loading, resulted] = useAgendaCreate();
 
-    if (typeof putAgendaCretae !== 'function' || typeof loading !== 'boolean' || typeof error !== 'string') {
+    if (typeof putAgendaCretae !== 'function' || typeof loading !== 'boolean' || typeof resulted !== 'object') {
         return null;
     }
 
@@ -236,6 +238,7 @@ const AgendaCreate: FC = () => {
         if (errorCount > 0) {
             return;
         }
+
         putAgendaCretae(localFormParams);
     };
 
@@ -261,6 +264,29 @@ const AgendaCreate: FC = () => {
             );
         }
         return ret;
+    };
+
+    // A function that displays a progress bar when reading
+    const renderSubmitProgressBar = () => {
+        if (loading) {
+            return <LinearProgress />;
+        }
+        return null;
+    };
+
+    const renderSnackBar = () => {
+        if (!loading && resulted.code === ResultedCodeVariation.success) {
+            // If creation is successful
+            return (
+                <CustomSnackBar type={SnackBarTypeVariation.success} message={resulted.value} />
+            );
+        } else if (!loading && resulted.code === ResultedCodeVariation.error) {
+            // If creation is failed
+            return (
+                <CustomSnackBar type={SnackBarTypeVariation.error} message={resulted.value} />
+            );
+        }
+        return null;
     };
 
     return (
@@ -325,10 +351,12 @@ const AgendaCreate: FC = () => {
                     </CardContent>
                 </Card>
                 <Box mx="auto" mt={2} className={classes.box}>
-                    <Button onClick={submitButtonClick} variant="contained" color="primary">
+                    <Button onClick={submitButtonClick} variant="contained" color="primary" disabled={loading}>
                         投稿
                     </Button>
                 </Box>
+                {renderSubmitProgressBar()}
+                {renderSnackBar()}
             </Container >
         </React.Fragment >
     );

@@ -10,9 +10,17 @@ import 'firebase/firestore';
 import { AuthState } from '../../../store/auth/types';
 import { CreateAgendaForm } from '../../../store/agenda/put/types';
 
+export enum ResultedCodeVariation {
+    success = 200,
+    error = 500
+}
+
 export const useAgendaCreate = () => {
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
+    const [resulted, setResulted] = useState({
+        code: 0,
+        value: ''
+    });
 
     const auth = useSelector((state: AuthState) => state.auth);
 
@@ -45,11 +53,12 @@ export const useAgendaCreate = () => {
                 console.error(details);
             });
             setLoading(false);
+            setResulted({ code: 200, value: '投稿に成功しました' });
         } catch (error) {
             setLoading(false);
-            setError(error.message);
+            setResulted({ code: 500, value: error.message });
         }
-    }, [loading, error]);
+    }, [loading, resulted]);
 
-    return [putAgendaCretae, loading, error];
+    return [putAgendaCretae, loading, resulted];
 };
