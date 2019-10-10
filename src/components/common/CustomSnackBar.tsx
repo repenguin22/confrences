@@ -77,12 +77,6 @@ const MySnackbarContentWrapper = (props: Props) => {
     );
 };
 
-const useStyles2 = makeStyles((theme: Theme) => ({
-    margin: {
-        margin: theme.spacing(1),
-    },
-}));
-
 export enum SnackBarTypeVariation {
     success = 'success',
     info = 'info',
@@ -96,12 +90,7 @@ interface CustomSnackBarProps {
 }
 
 export const CustomSnackBar = ({ message, type }: CustomSnackBarProps) => {
-    const classes = useStyles2();
-    const [open, setOpen] = React.useState(false);
-
-    const handleClick = () => {
-        setOpen(true);
-    };
+    const [open, setOpen] = React.useState(true);
 
     const handleClose = (event?: SyntheticEvent, reason?: string) => {
         if (reason === 'clickaway') {
@@ -158,9 +147,6 @@ export const CustomSnackBar = ({ message, type }: CustomSnackBarProps) => {
 
     return (
         <div>
-            <Button variant="outlined" className={classes.margin} onClick={handleClick}>
-                Open success snackbar
-            </Button>
             <Snackbar
                 anchorOrigin={{
                     vertical: 'bottom',

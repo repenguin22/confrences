@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 /** firebase */
 import * as firebase from 'firebase/app';
-import 'firebase/firestore';
+import 'firebase/functions';
 
 /** model */
 import { AuthState } from '../../../store/auth/types';
@@ -25,13 +25,17 @@ export const useAgendaCreate = () => {
     const auth = useSelector((state: AuthState) => state.auth);
 
     const putAgendaCretae = useCallback(async (agenda: CreateAgendaForm) => {
+        console.log(auth.uid);
+        console.log(auth.displayName);
+        console.log(auth.photoURL);
         if (auth.uid === null || auth.displayName === null || auth.photoURL === null) {
             return;
         }
         setLoading(true);
         try {
-            let createTheme = firebase.functions().httpsCallable('createAgenda');
-            await createTheme({
+            let createAgenda = firebase.functions().httpsCallable('createAgenda');
+            console.log('createagenda')
+            await createAgenda({
                 subject: agenda.subject.value,
                 overview: agenda.overview.value,
                 choice1: agenda.choice1.value,
@@ -43,6 +47,7 @@ export const useAgendaCreate = () => {
             }).then(result => {
                 // Read result of the Cloud Function.
                 console.log(result);
+                setResulted({ code: 200, value: '投稿に成功しました' });
             }).catch(error => {
                 // Getting the Error details
                 var code = error.code;
@@ -53,7 +58,6 @@ export const useAgendaCreate = () => {
                 console.error(details);
             });
             setLoading(false);
-            setResulted({ code: 200, value: '投稿に成功しました' });
         } catch (error) {
             setLoading(false);
             setResulted({ code: 500, value: error.message });
