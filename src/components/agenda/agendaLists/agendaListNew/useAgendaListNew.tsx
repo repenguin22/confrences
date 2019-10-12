@@ -50,10 +50,10 @@ export const useAgendaListNew = () => {
             setLoading(false);
         } catch (error) {
             console.error(error.message);
-            setLoading(false);
             setError(error.message);
+            setLoading(false);
         }
-    }, [loading, error, agendaList]);
+    }, [agendaList, loading, error]);
 
     return [agendaList, getAgendaListNew, loading, error];
 };

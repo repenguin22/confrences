@@ -1,4 +1,5 @@
 export const SET_AGENDA_LIST = 'SET_AGENDA_LIST';
+export const SET_AGENDA_DETAIL = 'SET_AGENDA_DETAIL';
 
 export interface Agenda {
     id: string;
@@ -23,12 +24,14 @@ export interface Agenda {
 
 export interface AgendaState {
     agendaList: Agenda[];
+    agendaDetail: Agenda;
 }
 
 // for useSelector
 export interface AllAgendaState {
     agenda: {
         agendaList: Agenda[];
+        agendaDetail: Agenda;
     }
 }
 
@@ -37,4 +40,9 @@ interface setAgendaListAction {
     payload: Agenda[];
 }
 
-export type AgendaActionTypes = setAgendaListAction;
+interface setAgendaDetailAction {
+    type: typeof SET_AGENDA_DETAIL;
+    payload: Agenda;
+}
+
+export type AgendaActionTypes = setAgendaListAction | setAgendaDetailAction;

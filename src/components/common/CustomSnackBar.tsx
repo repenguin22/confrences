@@ -161,6 +161,20 @@ export const CustomSnackBar = ({ message, type, vertical, horizontal }: CustomSn
                     {renderMySnackBar()}
                 </Snackbar>
             );
+        } else if (vertical === 'top' && horizontal === 'center') {
+            return (
+                <Snackbar
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'center',
+                    }}
+                    open={open}
+                    autoHideDuration={6000}
+                    onClose={handleClose}
+                >
+                    {renderMySnackBar()}
+                </Snackbar>
+            );
         } else if (vertical === 'top' && horizontal === 'right') {
             return (
                 <Snackbar

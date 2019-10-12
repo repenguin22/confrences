@@ -11,7 +11,6 @@ import 'firebase/auth';
 import { CustomSnackBar, SnackBarTypeVariation } from '../common/CustomSnackBar';
 
 /** action */
-import { signIn } from '../../store/auth/action';
 import { Auth, AuthState } from '../../store/auth/types';
 
 /** useAgendaCreate */

@@ -4,6 +4,10 @@ import { useLocation } from 'react-router-dom';
 
 /** Custom Components */
 import Header from '../../header/Header';
+import { CustomSnackBar, SnackBarTypeVariation } from '../../common/CustomSnackBar';
+
+/** useAgendaGet */
+import { useAgendaGet } from './useAgendaGet';
 
 /** model */
 import { CreateVoteForm } from '../../../store/agenda/put/types';
@@ -62,10 +66,6 @@ const AgendaDetail: FC = () => {
 
     const classes = useStyles();
 
-    const currentLocation = useLocation();
-    const agendaId = currentLocation.pathname.split('/')[2];
-
-
     // State that manages the opening and closing of the voting form dialog
     const [voteDialogOpen, setVoteDialogOpen] = React.useState(false);
 
@@ -83,6 +83,22 @@ const AgendaDetail: FC = () => {
             value: ''
         }
     });
+
+    const currentLocation = useLocation();
+    const agendaId = currentLocation.pathname.split('/')[2];
+
+    const [agendaDetail, getAgendaDetail, getAgendaLoading, getAgendaError] = useAgendaGet();
+
+    useEffect(() => {
+        if (typeof getAgendaDetail == 'function') {
+            getAgendaDetail(agendaId);
+        }
+    }, []);
+
+    if (typeof agendaDetail !== 'object' || typeof getAgendaLoading !== 'boolean' || typeof getAgendaError !== 'string') {
+        return null;
+    }
+
 
     // Function to initialize form data before opening dialog
     const localFormParamsInit = () => {
@@ -110,14 +126,14 @@ const AgendaDetail: FC = () => {
 
     // A function that draws a radio button of choices
     const renderChoiceRadioGroup = () => {
-        /*if (agendaDetails.id == null) {
+        if (agendaDetail.id === '') {
             return null;
         }
         let choices = [];
-        choices.push(agendaDetails.choice1);
-        choices.push(agendaDetails.choice2);
-        choices.push(agendaDetails.choice3);
-        choices.push(agendaDetails.choice4);
+        choices.push(agendaDetail.choice1);
+        choices.push(agendaDetail.choice2);
+        choices.push(agendaDetail.choice3);
+        choices.push(agendaDetail.choice4);
         let ret = [];
         for (let i = 0; i < choices.length; i++) {
             let choice = choices[i];
@@ -125,8 +141,7 @@ const AgendaDetail: FC = () => {
                 ret.push(<FormControlLabel key={i} value={choice} control={<Radio />} label={choice} />);
             }
         }
-        return ret;*/
-        return null;
+        return ret;
     };
 
     // A function that updates the state when the form value changes
@@ -196,6 +211,21 @@ const AgendaDetail: FC = () => {
         return null;
     };
 
+    // A function that displays a progress bar when reading
+    const renderLoadProgressBar = () => {
+        if (getAgendaLoading) {
+            return <LinearProgress />;
+        }
+        return null;
+    };
+
+    const renderLoadErrorSnackBar = () => {
+        if (!getAgendaLoading && getAgendaError !== '') {
+            return <CustomSnackBar type={SnackBarTypeVariation.error} message={getAgendaError} vertical="top" horizontal="center" />;
+        }
+        return null;
+    };
+
     // Function to draw the voting form dialog
     const renderVoteDialog = (
         <div>
@@ -248,7 +278,10 @@ const AgendaDetail: FC = () => {
             {renderFloatButton}
             {renderVoteDialog}
             <Header />
+            {renderLoadProgressBar()}
+            {renderLoadErrorSnackBar()}
             <Container maxWidth="xl">
+                <Button>aa</Button>
             </Container>
         </React.Fragment>
     );

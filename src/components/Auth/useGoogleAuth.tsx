@@ -41,7 +41,7 @@ export const useGoogleAuth = () => {
                 uid: uid,
                 displayName: auth.displayName,
                 photoURL: auth.photoURL
-            });
+            }, { merge: true });
             dispatch(signIn(auth));
             setLoading(false);
             setResulted({ code: ResultedCodeVariation.success, msg: '', value: '' });

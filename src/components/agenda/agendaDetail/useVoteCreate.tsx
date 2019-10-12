@@ -41,6 +41,12 @@ export const useVoteCreate = () => {
                 reason: formValues.reason.value,
                 selectedChoiceIndex: choiceIndex[choiceList.indexOf(formValues.choice.value)]
             });
+            if (result.data.code === ResultedCodeVariation.error) {
+                throw Object.assign(
+                    new Error('Error'),
+                    { code: 500 }
+                );
+            }
             setResulted({ code: ResultedCodeVariation.success, msg: '投稿に成功しました', value: result.data.value });
         } catch (error) {
             setLoading(false);
