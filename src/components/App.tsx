@@ -23,6 +23,7 @@ const App: FC = () => {
                     <Route path="/" component={AgendaListNew} exact />
                     <Route path="/agenda/new" component={AgendaListNew} exact />
                     <Route path="/agenda/create" component={AgendaCreate} exact />
+                    <Route path="/agenda/:id" component={AgendaListNew} exact />
                 </Switch>
             </Router>
         </div>

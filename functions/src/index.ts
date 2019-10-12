@@ -65,7 +65,7 @@ exports.createAgenda = functions.https.onCall(async (data: any, context: any) =>
         console.log('commit');
         return {
             code: '200',
-            value: 'successfull id:' + generateId
+            value: generateId
         };
     } catch (error) {
         console.error(error);

@@ -19,23 +19,22 @@ export const useAgendaCreate = () => {
     const [loading, setLoading] = useState(false);
     const [resulted, setResulted] = useState({
         code: 0,
+        msg: '',
         value: ''
     });
 
     const auth = useSelector((state: AuthState) => state.auth);
 
     const putAgendaCretae = useCallback(async (agenda: CreateAgendaForm) => {
-        console.log(auth.uid);
-        console.log(auth.displayName);
-        console.log(auth.photoURL);
+        setLoading(true);
         if (auth.uid === null || auth.displayName === null || auth.photoURL === null) {
+            setLoading(false);
+            setResulted({ code: ResultedCodeVariation.error, msg: 'サインインしてください', value: '' });
             return;
         }
-        setLoading(true);
         try {
             let createAgenda = firebase.functions().httpsCallable('createAgenda');
-            console.log('createagenda')
-            await createAgenda({
+            const result = await createAgenda({
                 subject: agenda.subject.value,
                 overview: agenda.overview.value,
                 choice1: agenda.choice1.value,
@@ -44,23 +43,11 @@ export const useAgendaCreate = () => {
                 choice4: agenda.choice4.value,
                 createUserName: auth.displayName,
                 createUserPhotoURL: auth.photoURL
-            }).then(result => {
-                // Read result of the Cloud Function.
-                console.log(result);
-                setResulted({ code: 200, value: '投稿に成功しました' });
-            }).catch(error => {
-                // Getting the Error details
-                var code = error.code;
-                var message = error.message;
-                var details = error.details;
-                console.error(code);
-                console.error(message);
-                console.error(details);
             });
-            setLoading(false);
+            setResulted({ code: ResultedCodeVariation.success, msg: '投稿に成功しました', value: result.data.value });
         } catch (error) {
             setLoading(false);
-            setResulted({ code: 500, value: error.message });
+            setResulted({ code: ResultedCodeVariation.error, msg: '投稿に失敗しました。時間をおいて再実施してください', value: '' });
         }
     }, [loading, resulted]);
 

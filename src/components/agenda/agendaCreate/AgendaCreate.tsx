@@ -1,5 +1,6 @@
 /** library */
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 
 /** Custom Components */
 import Header from '../../header/Header';
@@ -66,6 +67,8 @@ const AgendaCreate: FC = () => {
 
     const classes = useStyles();
 
+    const history = useHistory();
+
     // State to manage how many choices are displayed
     const [displayChoice, setDisplayChoice] = React.useState(INITIAL_CHOICE_DISPLAY_NUM);
 
@@ -105,6 +108,20 @@ const AgendaCreate: FC = () => {
     });
 
     const [putAgendaCretae, loading, resulted] = useAgendaCreate();
+
+    useEffect(() => {
+        // type check
+        if (typeof loading !== 'boolean' || typeof resulted !== 'object') {
+            return;
+        }
+        // If successful, skip to the corresponding page after a while.
+        if (resulted.code === ResultedCodeVariation.success) {
+            // If creation is successful
+            setTimeout(() => {
+                history.push(`/agenda/${resulted.value}`);
+            }, 2500);
+        }
+    }, [resulted]);
 
     if (typeof putAgendaCretae !== 'function' || typeof loading !== 'boolean' || typeof resulted !== 'object') {
         return null;
@@ -274,16 +291,17 @@ const AgendaCreate: FC = () => {
         return null;
     };
 
+    // A function that displays a snack bar if the post is successful or unsuccessful
     const renderSnackBar = () => {
-        if (!loading && resulted.code === ResultedCodeVariation.success) {
+        if (resulted.code === ResultedCodeVariation.success) {
             // If creation is successful
             return (
-                <CustomSnackBar type={SnackBarTypeVariation.success} message={resulted.value} />
+                <CustomSnackBar type={SnackBarTypeVariation.success} message={resulted.msg} />
             );
         } else if (!loading && resulted.code === ResultedCodeVariation.error) {
             // If creation is failed
             return (
-                <CustomSnackBar type={SnackBarTypeVariation.error} message={resulted.value} />
+                <CustomSnackBar type={SnackBarTypeVariation.error} message={resulted.msg} />
             );
         }
         return null;
