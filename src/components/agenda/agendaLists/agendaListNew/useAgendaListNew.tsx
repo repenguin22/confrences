@@ -40,7 +40,7 @@ export const useAgendaListNew = () => {
                         createUserId: '',
                         createUserName: '',
                         createUserPhotoURL: '',
-                        createdAt: '',
+                        createdAt: new Date(),
                         delFlg: false
                     };
                     agendaNewList.push(tmpAgenda);

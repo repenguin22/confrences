@@ -47,7 +47,7 @@ exports.createAgenda = functions.https.onCall(async (data: any, context: any) =>
             closeDate: '',
             favoriteCount: 0,
             createUser: userRef,
-            createdAt: admin.firestore.Timestamp.now(),
+            createdAt: admin.firestore.Timestamp.now().toDate(),
             delFlg: false
         });
         let countShardsBaseRef = admin.firestore().collection('agenda').doc(generateId);

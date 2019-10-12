@@ -18,7 +18,7 @@ export interface Agenda {
     createUserId: string;
     createUserName: string;
     createUserPhotoURL: string;
-    createdAt: string;
+    createdAt: Date;
     delFlg: boolean;
 }
 

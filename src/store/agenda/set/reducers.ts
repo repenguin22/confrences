@@ -19,7 +19,7 @@ const initialState: AgendaState = {
         createUserId: '',
         createUserName: '',
         createUserPhotoURL: '',
-        createdAt: '',
+        createdAt: new Date(),
         delFlg: false
     }
 };
