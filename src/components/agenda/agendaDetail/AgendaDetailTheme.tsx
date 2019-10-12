@@ -54,7 +54,7 @@ interface AgendaDetailThemeProps {
 const AgendaDetailTheme: FC<AgendaDetailThemeProps> = ({ agendaDetail }) => {
     const classes = useStyles();
 
-    if (agendaDetail == null) { return null; }
+    if (agendaDetail.id === '') { return null; }
 
     // report menu Event
     const reportMenuHandleEvent = () => {
