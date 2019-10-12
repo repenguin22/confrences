@@ -76,33 +76,33 @@ const AgendaCreate: FC = () => {
     const [localFormParams, setLocalFormParams] = React.useState<CreateAgendaForm>({
         formContents: ['subject', 'overview', 'choice1', 'choice2'],
         subject: {
-            errorMsg: '',
             error: false,
+            errorMsg: '',
             value: ''
         },
         overview: {
-            errorMsg: '',
             error: false,
+            errorMsg: '',
             value: ''
         },
         choice1: {
-            errorMsg: '',
             error: false,
+            errorMsg: '',
             value: ''
         },
         choice2: {
-            errorMsg: '',
             error: false,
+            errorMsg: '',
             value: ''
         },
         choice3: {
-            errorMsg: '',
             error: false,
+            errorMsg: '',
             value: ''
         },
         choice4: {
-            errorMsg: '',
             error: false,
+            errorMsg: '',
             value: ''
         }
     });
@@ -154,8 +154,8 @@ const AgendaCreate: FC = () => {
         tempFormContents = tempFormContents.filter((content: string) => content !== `choice${displayChoice}`);
         // Initialize local form state
         const initialChoiceObj = {
-            errorMsg: '',
             error: false,
+            errorMsg: '',
             value: ''
         };
         setLocalFormParams({ ...localFormParams, formContents: tempFormContents, [`choice${displayChoice}`]: initialChoiceObj });
@@ -167,8 +167,8 @@ const AgendaCreate: FC = () => {
         if (Array.isArray(paramObj)) {
             return;
         }
-        paramObj.errorMsg = '';
         paramObj.error = false;
+        paramObj.errorMsg = '';
         paramObj.value = event.target.value;
         setLocalFormParams({ ...localFormParams, [name]: paramObj });
         validate(name);
@@ -255,7 +255,6 @@ const AgendaCreate: FC = () => {
         if (errorCount > 0) {
             return;
         }
-
         putAgendaCretae(localFormParams);
     };
 
@@ -296,12 +295,12 @@ const AgendaCreate: FC = () => {
         if (resulted.code === ResultedCodeVariation.success) {
             // If creation is successful
             return (
-                <CustomSnackBar type={SnackBarTypeVariation.success} message={resulted.msg} />
+                <CustomSnackBar type={SnackBarTypeVariation.success} message={resulted.msg} vertical="bottom" horizontal="center" />
             );
         } else if (!loading && resulted.code === ResultedCodeVariation.error) {
             // If creation is failed
             return (
-                <CustomSnackBar type={SnackBarTypeVariation.error} message={resulted.msg} />
+                <CustomSnackBar type={SnackBarTypeVariation.error} message={resulted.msg} vertical="bottom" horizontal="center" />
             );
         }
         return null;

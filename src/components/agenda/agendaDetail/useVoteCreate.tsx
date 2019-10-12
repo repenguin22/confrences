@@ -8,14 +8,14 @@ import 'firebase/functions';
 
 /** model */
 import { AuthState } from '../../../store/auth/types';
-import { CreateAgendaForm } from '../../../store/agenda/put/types';
+import { CreateVoteForm } from '../../../store/agenda/put/types';
 
 export enum ResultedCodeVariation {
     success = 200,
     error = 500
 }
 
-export const useAgendaCreate = () => {
+export const useVoteCreate = () => {
     const [loading, setLoading] = useState(false);
     const [resulted, setResulted] = useState({
         code: 0,
@@ -25,7 +25,7 @@ export const useAgendaCreate = () => {
 
     const auth = useSelector((state: AuthState) => state.auth);
 
-    const putAgendaCretae = useCallback(async (agenda: CreateAgendaForm) => {
+    const putVoteCreate = useCallback(async (agendaId: string, choiceList: string[], formValues: CreateVoteForm) => {
         setLoading(true);
         if (auth.uid === null || auth.displayName === null || auth.photoURL === null) {
             setLoading(false);
@@ -33,21 +33,14 @@ export const useAgendaCreate = () => {
             return;
         }
         try {
-            let createAgenda = firebase.functions().httpsCallable('createAgenda');
-            const result = await createAgenda({
-                subject: agenda.subject.value,
-                overview: agenda.overview.value,
-                choice1: agenda.choice1.value,
-                choice2: agenda.choice2.value,
-                choice3: agenda.choice3.value,
-                choice4: agenda.choice4.value
+            const choiceIndex = ['choice1Count', 'choice2Count', 'choice3Count', 'choice4Count'];
+            let createVote = firebase.functions().httpsCallable('createVote');
+            const result = await createVote({
+                themeId: agendaId,
+                choice: formValues.choice.value,
+                reason: formValues.reason.value,
+                selectedChoiceIndex: choiceIndex[choiceList.indexOf(formValues.choice.value)]
             });
-            if (result.data.code === ResultedCodeVariation.error) {
-                throw Object.assign(
-                    new Error('Error'),
-                    { code: 500 }
-                );
-            }
             setResulted({ code: ResultedCodeVariation.success, msg: '投稿に成功しました', value: result.data.value });
         } catch (error) {
             setLoading(false);
@@ -55,5 +48,5 @@ export const useAgendaCreate = () => {
         }
     }, [loading, resulted]);
 
-    return [putAgendaCretae, loading, resulted];
+    return [putVoteCreate, loading, resulted];
 };

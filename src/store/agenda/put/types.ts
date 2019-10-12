@@ -1,41 +1,56 @@
 export interface CreateAgendaForm {
     formContents: string[];
     subject: {
-        errorMsg: string;
         error: boolean;
+        errorMsg: string;
         value: any;
     },
     overview: {
-        errorMsg: string;
         error: boolean;
+        errorMsg: string;
         value: any;
     },
     choice1: {
-        errorMsg: string;
         error: boolean;
+        errorMsg: string;
         value: any;
     },
     choice2: {
-        errorMsg: string;
         error: boolean;
+        errorMsg: string;
         value: any;
     },
     choice3: {
-        errorMsg: string;
         error: boolean;
+        errorMsg: string;
         value: any;
     },
     choice4: {
-        errorMsg: string;
         error: boolean;
+        errorMsg: string;
         value: any;
     },
-    [key: string]: CreateAgendaFormKey | string[];
+    [key: string]: CreateFormKey | string[];
 }
 
-interface CreateAgendaFormKey {
-    errorMsg: string;
+export interface CreateVoteForm {
+    formContents: string[];
+    choice: {
+        error: boolean;
+        errorMsg: string;
+        value: any;
+    },
+    reason: {
+        error: boolean;
+        errorMsg: string;
+        value: any;
+    }
+    [key: string]: CreateFormKey | string[];
+}
+
+interface CreateFormKey {
     error: boolean;
+    errorMsg: string;
     value: any;
 }
 

@@ -1,15 +1,21 @@
 /** library */
 import React, { FC } from 'react';
 //import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 /** firebase lib */
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 
+/** Custom Components */
+import { CustomSnackBar, SnackBarTypeVariation } from '../common/CustomSnackBar';
+
 /** action */
 import { signIn } from '../../store/auth/action';
 import { Auth, AuthState } from '../../store/auth/types';
+
+/** useAgendaCreate */
+import { useGoogleAuth, ResultedCodeVariation } from './useGoogleAuth';
 
 /** Material UI Components */
 import { makeStyles } from '@material-ui/core/styles';
@@ -30,11 +36,16 @@ const GoogleAuth: FC = () => {
 
     const loginedUserId: string | null = useSelector((state: AuthState) => state.auth.uid);
 
-    const dispatch = useDispatch();
+    const [putAuth, loading, resulted] = useGoogleAuth();
 
-    const onSignIn = () => {
+    if (typeof putAuth !== 'function' || typeof loading !== 'boolean' || typeof resulted !== 'object') {
+        return null;
+    }
+
+    const onSignIn = async () => {
         let provider = new firebase.auth.GoogleAuthProvider();
-        firebase.auth().signInWithPopup(provider).then(result => {
+        try {
+            const result = await firebase.auth().signInWithPopup(provider);
             if (!result.user) {
                 throw Object.assign(
                     new Error('Google Auth Fatal Error'),
@@ -46,14 +57,22 @@ const GoogleAuth: FC = () => {
                 displayName: result.user.displayName,
                 photoURL: result.user.photoURL
             };
-            dispatch(signIn(auth));
-        }).catch(error => {
+            putAuth(auth);
+        } catch (error) {
             let errorCode = error.code;
             let errorMessage = error.message;
             console.log(errorCode);
             console.log(errorMessage);
-        });
+        }
     };
+
+    const renderSnackBar = () => {
+        if (loading !== false && resulted.code === ResultedCodeVariation.error) {
+            return (
+                <CustomSnackBar type={SnackBarTypeVariation.error} message={resulted.msg} vertical="top" horizontal="right" />
+            );
+        }
+    }
 
     const renderButton = () => {
 
@@ -61,9 +80,12 @@ const GoogleAuth: FC = () => {
             return null;
         }
         return (
-            <Button onClick={onSignIn} variant="contained" color="secondary" className={classes.button}>
-                Sign In With Google
-            </Button>
+            <React.Fragment>
+                <Button onClick={onSignIn} variant="contained" color="secondary" className={classes.button}>
+                    Sign In With Google
+                </Button>
+                {renderSnackBar()}
+            </React.Fragment>
         );
     };
 

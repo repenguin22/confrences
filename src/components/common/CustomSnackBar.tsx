@@ -86,9 +86,11 @@ export enum SnackBarTypeVariation {
 interface CustomSnackBarProps {
     message: string;
     type: SnackBarTypeVariation;
+    vertical: string;
+    horizontal: string
 }
 
-export const CustomSnackBar = ({ message, type }: CustomSnackBarProps) => {
+export const CustomSnackBar = ({ message, type, vertical, horizontal }: CustomSnackBarProps) => {
     const [open, setOpen] = React.useState(true);
 
     const handleClose = (event?: SyntheticEvent, reason?: string) => {
@@ -144,19 +146,41 @@ export const CustomSnackBar = ({ message, type }: CustomSnackBarProps) => {
         }
     };
 
+    const renderSnackBar = () => {
+        if (vertical === 'bottom' && horizontal === 'center') {
+            return (
+                <Snackbar
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'center',
+                    }}
+                    open={open}
+                    autoHideDuration={6000}
+                    onClose={handleClose}
+                >
+                    {renderMySnackBar()}
+                </Snackbar>
+            );
+        } else if (vertical === 'top' && horizontal === 'right') {
+            return (
+                <Snackbar
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                    }}
+                    open={open}
+                    autoHideDuration={6000}
+                    onClose={handleClose}
+                >
+                    {renderMySnackBar()}
+                </Snackbar>
+            );
+        }
+    };
+
     return (
-        <div>
-            <Snackbar
-                anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'center',
-                }}
-                open={open}
-                autoHideDuration={6000}
-                onClose={handleClose}
-            >
-                {renderMySnackBar()}
-            </Snackbar>
-        </div>
+        <React.Fragment>
+            {renderSnackBar()}
+        </React.Fragment>
     );
 };

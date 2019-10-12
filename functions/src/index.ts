@@ -31,10 +31,11 @@ exports.createAgenda = functions.https.onCall(async (data: any, context: any) =>
             throw new functions.https.HttpsError('unauthenticated', 'User is not authenticated.');
         }
         // 一括書き込みを実施する
-        console.info(data);
+        console.log(data);
         let batch = admin.firestore().batch();
         let generateId = getRandomId('');
         let agendaRef = admin.firestore().collection('agenda').doc(generateId);
+        const userRef = admin.firestore().collection('user').doc(context.auth.uid);
         batch.set(agendaRef, {
             id: generateId,
             subject: data.subject.replace(/\r?\n/g, '\n'),
@@ -45,9 +46,7 @@ exports.createAgenda = functions.https.onCall(async (data: any, context: any) =>
             choice4: data.choice4,
             closeDate: '',
             favoriteCount: 0,
-            createUserId: context.auth.uid,
-            createUserName: data.createUserName,
-            createUserPhotoURL: data.createUserPhotoURL,
+            createUser: userRef,
             createdAt: admin.firestore.Timestamp.now(),
             delFlg: false
         });
