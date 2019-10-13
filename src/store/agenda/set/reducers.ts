@@ -1,4 +1,4 @@
-import { AgendaState, AgendaActionTypes, SET_AGENDA_LIST, SET_AGENDA_DETAIL } from './types';
+import { AgendaState, AgendaActionTypes, SET_AGENDA_LIST, SET_AGENDA_DETAIL, SET_AGENDA_DETAIL_VOTE_LIST } from './types';
 
 const initialState: AgendaState = {
     agendaList: [],
@@ -21,7 +21,8 @@ const initialState: AgendaState = {
         createUserPhotoURL: '',
         createdAt: new Date(),
         delFlg: false
-    }
+    },
+    voteList: []
 };
 
 export const setAgendaReducer = (state = initialState, action: AgendaActionTypes): AgendaState => {
@@ -30,6 +31,8 @@ export const setAgendaReducer = (state = initialState, action: AgendaActionTypes
             return { ...state, agendaList: action.payload };
         case SET_AGENDA_DETAIL:
             return { ...state, agendaDetail: action.payload };
+        case SET_AGENDA_DETAIL_VOTE_LIST:
+            return { ...state, voteList: action.payload };
         default:
             return state;
     }

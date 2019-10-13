@@ -1,12 +1,14 @@
 /** library */
 import { useState, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 /** firebase */
 import * as firebase from 'firebase/app';
 
 /** action */
 import { signIn } from '../../store/auth/action';
+import { Notice, NoticeState, SnackBarTypeVariation } from '../../store/notice/types';
+import { setNotice } from '../../store/notice/action';
 /** model */
 import { Auth } from '../../store/auth/types';
 
@@ -18,6 +20,7 @@ export enum ResultedCodeVariation {
 export const useGoogleAuth = () => {
     const dispatch = useDispatch();
 
+    const notice = useSelector((state: NoticeState) => state.notice);
     const [loading, setLoading] = useState(false);
     const [resulted, setResulted] = useState({
         code: 0,
@@ -46,8 +49,15 @@ export const useGoogleAuth = () => {
             setLoading(false);
             setResulted({ code: ResultedCodeVariation.success, msg: '', value: '' });
         } catch (error) {
-            setLoading(false);
             setResulted({ code: ResultedCodeVariation.error, msg: 'ログインに失敗しました', value: `code:${error.code} ${error.message}` });
+            setLoading(false);
+            dispatch(setNotice({
+                count: notice.count + 1,
+                type: SnackBarTypeVariation.success,
+                message: '投票に成功しました',
+                vertical: 'top',
+                horizontal: 'center'
+            }));
         }
     }, [loading, resulted]);
 

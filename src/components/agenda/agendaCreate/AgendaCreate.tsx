@@ -72,6 +72,8 @@ const AgendaCreate: FC = () => {
     // State to manage how many choices are displayed
     const [displayChoice, setDisplayChoice] = React.useState(INITIAL_CHOICE_DISPLAY_NUM);
 
+    const [isOpenNum, setIsOpenNum] = React.useState(0);
+
     // State that manages form values
     const [localFormParams, setLocalFormParams] = React.useState<CreateAgendaForm>({
         formContents: ['subject', 'overview', 'choice1', 'choice2'],
@@ -290,22 +292,6 @@ const AgendaCreate: FC = () => {
         return null;
     };
 
-    // A function that displays a snack bar if the post is successful or unsuccessful
-    const renderSnackBar = () => {
-        if (resulted.code === ResultedCodeVariation.success) {
-            // If creation is successful
-            return (
-                <CustomSnackBar type={SnackBarTypeVariation.success} message={resulted.msg} vertical="bottom" horizontal="center" />
-            );
-        } else if (!loading && resulted.code === ResultedCodeVariation.error) {
-            // If creation is failed
-            return (
-                <CustomSnackBar type={SnackBarTypeVariation.error} message={resulted.msg} vertical="bottom" horizontal="center" />
-            );
-        }
-        return null;
-    };
-
     return (
         <React.Fragment>
             <Header />
@@ -373,7 +359,7 @@ const AgendaCreate: FC = () => {
                     </Button>
                 </Box>
                 {renderSubmitProgressBar()}
-                {renderSnackBar()}
+                <CustomSnackBar />
             </Container >
         </React.Fragment >
     );

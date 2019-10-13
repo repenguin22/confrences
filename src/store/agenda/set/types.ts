@@ -1,5 +1,6 @@
 export const SET_AGENDA_LIST = 'SET_AGENDA_LIST';
 export const SET_AGENDA_DETAIL = 'SET_AGENDA_DETAIL';
+export const SET_AGENDA_DETAIL_VOTE_LIST = 'SET_AGENDA_DETAIL_VOTE_LIST';
 
 export interface Agenda {
     id: string;
@@ -22,9 +23,22 @@ export interface Agenda {
     delFlg: boolean;
 }
 
+export interface Vote {
+    id: string;
+    choice: string;
+    reason: string;
+    goodCount: number;
+    createUserId: string;
+    createUserName: string;
+    createUserPhotoURL: string;
+    createdAt: Date;
+    delFlg: boolean
+}
+
 export interface AgendaState {
     agendaList: Agenda[];
     agendaDetail: Agenda;
+    voteList: Vote[];
 }
 
 // for useSelector
@@ -32,6 +46,7 @@ export interface AllAgendaState {
     agenda: {
         agendaList: Agenda[];
         agendaDetail: Agenda;
+        voteList: Vote[];
     }
 }
 
@@ -45,4 +60,9 @@ interface setAgendaDetailAction {
     payload: Agenda;
 }
 
-export type AgendaActionTypes = setAgendaListAction | setAgendaDetailAction;
+interface setAgendaDetailVoteListAction {
+    type: typeof SET_AGENDA_DETAIL_VOTE_LIST;
+    payload: Vote[];
+}
+
+export type AgendaActionTypes = setAgendaListAction | setAgendaDetailAction | setAgendaDetailVoteListAction;

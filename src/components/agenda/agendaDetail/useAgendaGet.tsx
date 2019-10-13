@@ -8,6 +8,8 @@ import * as firebase from 'firebase/app';
 /** action */
 import { Agenda, AllAgendaState } from '../../../store/agenda/set/types';
 import { setAgendaDetail } from '../../../store/agenda/set/action';
+import { Notice, NoticeState, SnackBarTypeVariation } from '../../../store/notice/types';
+import { setNotice } from '../../../store/notice/action';
 
 export enum ResultedCodeVariation {
     not_found = '404',
@@ -18,6 +20,7 @@ export const useAgendaGet = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const agendaDetail = useSelector((state: AllAgendaState) => state.agenda.agendaDetail);
+    const notice = useSelector((state: NoticeState) => state.notice);
 
     const dispatch = useDispatch();
 
@@ -64,15 +67,22 @@ export const useAgendaGet = () => {
             agendaDetail.choice2 = agenda.choice2;
             agendaDetail.choice3 = agenda.choice3;
             agendaDetail.choice4 = agenda.choice4;
-            const createUserRef = agenda.createUser;
+            agendaDetail.closeDate = agenda.closeDate;
+            agendaDetail.favoriteCount = agenda.favoriteCount;
+            agendaDetail.createdAt = agenda.createdAt.seconds;
+            agendaDetail.delFlg = agenda.delFlg;
+            const createUserId = agenda.createUserId;
 
             // Get creation user data
-            const createUserDoc = await createUserRef.get();
+            const createUserDoc = await db.collection('user').doc(createUserId).get();
             if (!createUserDoc.exists) {
                 throw new Error(ResultedCodeVariation.not_found);
             }
 
             const createUserData = createUserDoc.data();
+            if (createUserData === undefined) {
+                throw new Error(ResultedCodeVariation.not_found);
+            }
             //agendaDetail.uid = createUserData.uid;
             agendaDetail.createUserName = createUserData.displayName;
             agendaDetail.createUserPhotoURL = createUserData.photoURL;
@@ -88,16 +98,28 @@ export const useAgendaGet = () => {
                 agendaDetail.choice3Count += doc.data().choice3Count;
                 agendaDetail.choice4Count += doc.data().choice4Count;
             });
-
             dispatch(setAgendaDetail(agendaDetail));
             setLoading(false);
         } catch (error) {
             if (error.message === ResultedCodeVariation.not_found) {
                 setError('データが存在しません');
+                dispatch(setNotice({
+                    count: notice.count + 1,
+                    type: SnackBarTypeVariation.error,
+                    message: 'データが存在しません',
+                    vertical: 'top',
+                    horizontal: 'center'
+                }));
             } else {
                 setError('データの取得に失敗しました');
+                dispatch(setNotice({
+                    count: notice.count + 1,
+                    type: SnackBarTypeVariation.error,
+                    message: 'データの取得に失敗しました',
+                    vertical: 'top',
+                    horizontal: 'center'
+                }));
             }
-
             setLoading(false);
         }
     }, [agendaDetail, loading, error]);

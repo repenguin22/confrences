@@ -52,6 +52,26 @@ class validation {
 
         return paramObj;
     }
+    /** A function that checks whether the same value exists */
+    validSameValue(paramObj: paramObjIF, values: any, msg: string) {
+        const val = paramObj.value;
+        let count = 0;
+        values.forEach((v: string) => {
+            if (v === val) {
+                count++;
+            }
+        });
+        if (count === 1) {
+            paramObj.error = false;
+            paramObj.errorMsg = '';
+        } else {
+            paramObj.error = true;
+            paramObj.errorMsg = msg;
+            paramObj.value = val;
+        }
+
+        return paramObj;
+    }
 }
 
 export default validation;

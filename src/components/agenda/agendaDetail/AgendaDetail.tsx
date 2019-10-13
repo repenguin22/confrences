@@ -9,8 +9,9 @@ import AgendaDetailResult from './AgendaDetailResult';
 import AgendaDetailList from './AgendaDetailList';
 import { CustomSnackBar, SnackBarTypeVariation } from '../../common/CustomSnackBar';
 
-/** useAgendaGet */
-import { useAgendaGet } from './useAgendaGet';
+/** use */
+import { useAgendaGet, ResultedCodeVariation } from './useAgendaGet';
+import { useVoteCreate, ResultedCodeVariation as voteCreateResultedCodeVariation } from './useVoteCreate';
 
 /** model */
 import { CreateVoteForm } from '../../../store/agenda/put/types';
@@ -87,10 +88,13 @@ const AgendaDetail: FC = () => {
         }
     });
 
+    const [isOpenNum, setIsOpenNum] = React.useState(0);
+
     const currentLocation = useLocation();
     const agendaId = currentLocation.pathname.split('/')[2];
 
     const [agendaDetail, getAgendaDetail, getAgendaLoading, getAgendaError] = useAgendaGet();
+    const [putVoteCreate, createVoteLoading, createVoteResulted] = useVoteCreate();
 
     useEffect(() => {
         if (typeof getAgendaDetail == 'function') {
@@ -98,7 +102,22 @@ const AgendaDetail: FC = () => {
         }
     }, []);
 
+    useEffect(() => {
+        if (typeof createVoteResulted !== 'object') {
+            return;
+        }
+        if (createVoteResulted.code === voteCreateResultedCodeVariation.error) {
+            return;
+        }
+        voteDialogClose();
+    }, [createVoteResulted]);
+
+
+
     if (typeof agendaDetail !== 'object' || typeof getAgendaLoading !== 'boolean' || typeof getAgendaError !== 'string') {
+        return null;
+    }
+    if (typeof putVoteCreate !== 'function' || typeof createVoteLoading !== 'boolean' || typeof createVoteResulted !== 'object') {
         return null;
     }
 
@@ -203,14 +222,19 @@ const AgendaDetail: FC = () => {
         if (errorCount > 0) {
             return;
         }
-        //putVoteCretae(localFormParams);
+        let choices = [];
+        choices.push(agendaDetail.choice1);
+        choices.push(agendaDetail.choice2);
+        choices.push(agendaDetail.choice3);
+        choices.push(agendaDetail.choice4);
+        putVoteCreate(agendaId, choices, localFormParams);
     };
 
     // A function that displays a progress bar when reading
     const renderSubmitProgressBar = () => {
-        /*if (loading) {
+        if (createVoteLoading) {
             return <LinearProgress />;
-        }*/
+        }
         return null;
     };
 
@@ -218,13 +242,6 @@ const AgendaDetail: FC = () => {
     const renderLoadProgressBar = () => {
         if (getAgendaLoading) {
             return <LinearProgress />;
-        }
-        return null;
-    };
-
-    const renderLoadErrorSnackBar = () => {
-        if (!getAgendaLoading && getAgendaError !== '') {
-            return <CustomSnackBar type={SnackBarTypeVariation.error} message={getAgendaError} vertical="top" horizontal="center" />;
         }
         return null;
     };
@@ -282,7 +299,7 @@ const AgendaDetail: FC = () => {
             {renderVoteDialog}
             <Header />
             {renderLoadProgressBar()}
-            {renderLoadErrorSnackBar()}
+            <CustomSnackBar />
             <Container maxWidth="xl">
                 <AgendaDetailTheme agendaDetail={agendaDetail} />
                 <AgendaDetailResult agendaDetail={agendaDetail} />

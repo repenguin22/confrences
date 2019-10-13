@@ -1,11 +1,15 @@
 /** library */
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import Pagination from 'material-ui-flat-pagination';
 
+/** Custom Components */
+import AgendaDetailThemeByList from './AgendaDetailThemeByList';
+
 /** action */
 import { Auth, AuthState } from '../../../store/auth/types';
+import { useVoteGet } from './useVoteGet';
 
 /** model */
 import { Agenda } from '../../../store/agenda/set/types';
@@ -72,6 +76,8 @@ const AgendaDetailList: FC<AgendaDetailListProps> = ({ agendaDetail }) => {
 
     const [dialogOpen, setDialogOpen] = React.useState(false);
 
+    const [localReloadCount, setLocalReloadCount] = React.useState(0);
+
     const [sortAnchorEl, setSortAnchorEl] = React.useState<null | HTMLElement>(null);
     const [sort, setSort] = React.useState(NEW);
 
@@ -81,9 +87,17 @@ const AgendaDetailList: FC<AgendaDetailListProps> = ({ agendaDetail }) => {
     const [offset, setOffset] = React.useState(0);
     const limit = 20;
 
-    /*useEffect(() => {
-        //dispatch(getThemeDetailsVotes(currentThemeId));
-    }, [/*reloadCount]);*/
+    const [voteList, getVoteList, loading, error] = useVoteGet();
+
+    useEffect(() => {
+        if (typeof getVoteList === 'function') {
+            getVoteList(agendaId);
+        }
+    }, [localReloadCount]);
+
+    if (!Array.isArray(voteList) || typeof loading !== 'boolean' || typeof error !== 'string') {
+        return null;
+    }
 
     /** filter Handler */
     const filterDialogHandleOpen = () => {
@@ -102,7 +116,7 @@ const AgendaDetailList: FC<AgendaDetailListProps> = ({ agendaDetail }) => {
 
     /** reload button handler */
     const reloadHandleClick = () => {
-        //dispatch(setVoteReload());
+        setLocalReloadCount(localReloadCount + 1);
         setOffset(0);
     };
 
@@ -164,7 +178,7 @@ const AgendaDetailList: FC<AgendaDetailListProps> = ({ agendaDetail }) => {
         </div>
     );
 
-    /*const renderAgendaDetailTheme = () => {
+    const renderAgendaDetailTheme = () => {
         let tmpVoteList = voteList.slice();
         if (sort === NEW) {
             tmpVoteList.sort((a, b) => { return a.createdAt < b.createdAt ? 1 : -1; });
@@ -193,12 +207,12 @@ const AgendaDetailList: FC<AgendaDetailListProps> = ({ agendaDetail }) => {
         return tmpVoteList.slice(offset, offset + limit).map((voteDetail, index, array) => {
             return (
                 <React.Fragment key={index}>
-                    <ThemeDetailThemeByList voteDetial={voteDetail} />
+                    <AgendaDetailThemeByList voteDetial={voteDetail} />
                     <Box mt={1} />
                 </React.Fragment>
             );
         });
-    };*/
+    };
 
     return (
         <div className={classes.root}>
@@ -230,11 +244,12 @@ const AgendaDetailList: FC<AgendaDetailListProps> = ({ agendaDetail }) => {
                 />
                 <CardContent>
                     {renderAgendaDiaglog}
+                    {renderAgendaDetailTheme()}
                     <Box mx="auto" mt={2} className={classes.box}>
                         <Pagination
                             limit={limit}
                             offset={offset}
-                            total={10}//voteList.length}
+                            total={voteList.length}
                             onClick={(event, offset: number) => pagingHandleClick(offset)}
                         />
                     </Box>

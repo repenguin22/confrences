@@ -1,4 +1,4 @@
-import { Agenda, SET_AGENDA_LIST, SET_AGENDA_DETAIL } from './types';
+import { Agenda, Vote, SET_AGENDA_LIST, SET_AGENDA_DETAIL, SET_AGENDA_DETAIL_VOTE_LIST } from './types';
 
 export const setAgendaList = (agendaList: Agenda[]) => {
     return {
@@ -11,5 +11,12 @@ export const setAgendaDetail = (agenda: Agenda) => {
     return {
         type: SET_AGENDA_DETAIL,
         payload: agenda
+    };
+};
+
+export const setAgendaDetailVoteList = (voteList: Vote[]) => {
+    return {
+        type: SET_AGENDA_DETAIL_VOTE_LIST,
+        payload: voteList
     };
 };

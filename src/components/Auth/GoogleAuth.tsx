@@ -65,14 +65,6 @@ const GoogleAuth: FC = () => {
         }
     };
 
-    const renderSnackBar = () => {
-        if (loading !== false && resulted.code === ResultedCodeVariation.error) {
-            return (
-                <CustomSnackBar type={SnackBarTypeVariation.error} message={resulted.msg} vertical="top" horizontal="right" />
-            );
-        }
-    }
-
     const renderButton = () => {
 
         if (loginedUserId) {
@@ -83,7 +75,7 @@ const GoogleAuth: FC = () => {
                 <Button onClick={onSignIn} variant="contained" color="secondary" className={classes.button}>
                     Sign In With Google
                 </Button>
-                {renderSnackBar()}
+                <CustomSnackBar />
             </React.Fragment>
         );
     };

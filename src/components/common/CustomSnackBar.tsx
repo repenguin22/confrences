@@ -1,4 +1,10 @@
-import React, { SyntheticEvent } from 'react';
+import React, { SyntheticEvent, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { NoticeState } from '../../store/notice/types';
+import { setNotice } from '../../store/notice/action';
+import { initialState as initialNotice } from '../../store/notice/reducers';
+
 import clsx from 'clsx';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ErrorIcon from '@material-ui/icons/Error';
@@ -83,32 +89,34 @@ export enum SnackBarTypeVariation {
     error = 'error',
 }
 
-interface CustomSnackBarProps {
-    message: string;
-    type: SnackBarTypeVariation;
-    vertical: string;
-    horizontal: string
-}
+export const CustomSnackBar = () => {
 
-export const CustomSnackBar = ({ message, type, vertical, horizontal }: CustomSnackBarProps) => {
-    const [open, setOpen] = React.useState(true);
+    const dispatch = useDispatch();
+
+    const notice = useSelector((state: NoticeState) => state.notice);
+
+    if (notice.type === null || notice.message === null || notice.vertical === null || notice.horizontal === null) {
+        return null;
+    }
 
     const handleClose = (event?: SyntheticEvent, reason?: string) => {
         if (reason === 'clickaway') {
             return;
         }
-
-        setOpen(false);
+        dispatch(setNotice(initialNotice));
     };
 
     const renderMySnackBar = () => {
-        switch (type) {
+        if (notice.message === null) {
+            return;
+        }
+        switch (notice.type) {
             case SnackBarTypeVariation.success:
                 return (
                     <MySnackbarContentWrapper
                         onClose={handleClose}
                         variant={SnackBarTypeVariation.success}
-                        message={message}
+                        message={notice.message}
                     />
                 );
             case SnackBarTypeVariation.info:
@@ -116,7 +124,7 @@ export const CustomSnackBar = ({ message, type, vertical, horizontal }: CustomSn
                     <MySnackbarContentWrapper
                         onClose={handleClose}
                         variant={SnackBarTypeVariation.info}
-                        message={message}
+                        message={notice.message}
                     />
                 );
             case SnackBarTypeVariation.warning:
@@ -124,7 +132,7 @@ export const CustomSnackBar = ({ message, type, vertical, horizontal }: CustomSn
                     <MySnackbarContentWrapper
                         onClose={handleClose}
                         variant={SnackBarTypeVariation.warning}
-                        message={message}
+                        message={notice.message}
                     />
                 );
             case SnackBarTypeVariation.error:
@@ -132,7 +140,7 @@ export const CustomSnackBar = ({ message, type, vertical, horizontal }: CustomSn
                     <MySnackbarContentWrapper
                         onClose={handleClose}
                         variant={SnackBarTypeVariation.error}
-                        message={message}
+                        message={notice.message}
                     />
                 );
             default:
@@ -140,49 +148,49 @@ export const CustomSnackBar = ({ message, type, vertical, horizontal }: CustomSn
                     <MySnackbarContentWrapper
                         onClose={handleClose}
                         variant={SnackBarTypeVariation.success}
-                        message={message}
+                        message={notice.message}
                     />
                 );
         }
     };
 
     const renderSnackBar = () => {
-        if (vertical === 'bottom' && horizontal === 'center') {
+        if (notice.vertical === 'bottom' && notice.horizontal === 'center') {
             return (
                 <Snackbar
                     anchorOrigin={{
                         vertical: 'bottom',
                         horizontal: 'center',
                     }}
-                    open={open}
+                    open={true}
                     autoHideDuration={6000}
                     onClose={handleClose}
                 >
                     {renderMySnackBar()}
                 </Snackbar>
             );
-        } else if (vertical === 'top' && horizontal === 'center') {
+        } else if (notice.vertical === 'top' && notice.horizontal === 'center') {
             return (
                 <Snackbar
                     anchorOrigin={{
                         vertical: 'top',
                         horizontal: 'center',
                     }}
-                    open={open}
+                    open={true}
                     autoHideDuration={6000}
                     onClose={handleClose}
                 >
                     {renderMySnackBar()}
                 </Snackbar>
             );
-        } else if (vertical === 'top' && horizontal === 'right') {
+        } else if (notice.vertical === 'top' && notice.horizontal === 'right') {
             return (
                 <Snackbar
                     anchorOrigin={{
                         vertical: 'top',
                         horizontal: 'right',
                     }}
-                    open={open}
+                    open={true}
                     autoHideDuration={6000}
                     onClose={handleClose}
                 >

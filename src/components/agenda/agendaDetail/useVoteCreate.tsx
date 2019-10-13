@@ -1,6 +1,6 @@
 /** library */
 import { useState, useCallback } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 /** firebase */
 import * as firebase from 'firebase/app';
@@ -10,47 +10,76 @@ import 'firebase/functions';
 import { AuthState } from '../../../store/auth/types';
 import { CreateVoteForm } from '../../../store/agenda/put/types';
 
+/** action */
+import { Notice, NoticeState, SnackBarTypeVariation } from '../../../store/notice/types';
+import { setNotice } from '../../../store/notice/action';
+
 export enum ResultedCodeVariation {
-    success = 200,
-    error = 500
+    success = '200',
+    error = '500'
 }
 
 export const useVoteCreate = () => {
+
+    const dispatch = useDispatch();
+
     const [loading, setLoading] = useState(false);
     const [resulted, setResulted] = useState({
-        code: 0,
+        code: '',
         msg: '',
         value: ''
     });
 
     const auth = useSelector((state: AuthState) => state.auth);
+    const notice = useSelector((state: NoticeState) => state.notice);
 
     const putVoteCreate = useCallback(async (agendaId: string, choiceList: string[], formValues: CreateVoteForm) => {
         setLoading(true);
         if (auth.uid === null || auth.displayName === null || auth.photoURL === null) {
             setLoading(false);
             setResulted({ code: ResultedCodeVariation.error, msg: 'サインインしてください', value: '' });
+            dispatch(setNotice({
+                count: notice.count + 1,
+                type: SnackBarTypeVariation.error,
+                message: 'サインインしてください',
+                vertical: 'top',
+                horizontal: 'center'
+            }));
             return;
         }
         try {
             const choiceIndex = ['choice1Count', 'choice2Count', 'choice3Count', 'choice4Count'];
             let createVote = firebase.functions().httpsCallable('createVote');
             const result = await createVote({
-                themeId: agendaId,
+                agendaId: agendaId,
                 choice: formValues.choice.value,
                 reason: formValues.reason.value,
-                selectedChoiceIndex: choiceIndex[choiceList.indexOf(formValues.choice.value)]
+                selectedChoiceIndex: choiceIndex[choiceList.indexOf(formValues.choice.value)],
+                displayName: auth.displayName,
+                photoURL: auth.photoURL
             });
             if (result.data.code === ResultedCodeVariation.error) {
-                throw Object.assign(
-                    new Error('Error'),
-                    { code: 500 }
-                );
+                throw new Error(ResultedCodeVariation.error);
             }
-            setResulted({ code: ResultedCodeVariation.success, msg: '投稿に成功しました', value: result.data.value });
-        } catch (error) {
+            setResulted({ code: ResultedCodeVariation.success, msg: '投票に成功しました', value: result.data.value });
             setLoading(false);
-            setResulted({ code: ResultedCodeVariation.error, msg: '投稿に失敗しました。時間をおいて再実施してください', value: '' });
+            dispatch(setNotice({
+                count: notice.count + 1,
+                type: SnackBarTypeVariation.success,
+                message: '投票に成功しました',
+                vertical: 'top',
+                horizontal: 'center'
+            }));
+        } catch (error) {
+            setResulted({ code: ResultedCodeVariation.error, msg: '投票に失敗しました。時間をおいて再実施してください', value: '' });
+            setLoading(false);
+            dispatch(setNotice({
+                count: notice.count + 1,
+                type: SnackBarTypeVariation.error,
+                message: '投票に失敗しました。時間をおいて再実施してください',
+                vertical: 'top',
+                horizontal: 'center'
+            }));
         }
     }, [loading, resulted]);
 
