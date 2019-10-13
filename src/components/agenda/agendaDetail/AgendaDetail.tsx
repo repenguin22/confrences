@@ -6,6 +6,7 @@ import { useLocation } from 'react-router-dom';
 import Header from '../../header/Header';
 import AgendaDetailTheme from './AgendaDetailTheme';
 import AgendaDetailResult from './AgendaDetailResult';
+import AgendaDetailList from './AgendaDetailList';
 import { CustomSnackBar, SnackBarTypeVariation } from '../../common/CustomSnackBar';
 
 /** useAgendaGet */
@@ -285,6 +286,7 @@ const AgendaDetail: FC = () => {
             <Container maxWidth="xl">
                 <AgendaDetailTheme agendaDetail={agendaDetail} />
                 <AgendaDetailResult agendaDetail={agendaDetail} />
+                <AgendaDetailList agendaDetail={agendaDetail} />
             </Container>
         </React.Fragment>
     );

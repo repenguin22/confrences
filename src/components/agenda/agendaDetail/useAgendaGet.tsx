@@ -9,7 +9,6 @@ import * as firebase from 'firebase/app';
 import { Agenda, AllAgendaState } from '../../../store/agenda/set/types';
 import { setAgendaDetail } from '../../../store/agenda/set/action';
 
-
 export enum ResultedCodeVariation {
     not_found = '404',
     internal_server_error = '500'
@@ -89,6 +88,7 @@ export const useAgendaGet = () => {
                 agendaDetail.choice3Count += doc.data().choice3Count;
                 agendaDetail.choice4Count += doc.data().choice4Count;
             });
+
             dispatch(setAgendaDetail(agendaDetail));
             setLoading(false);
         } catch (error) {
