@@ -1,6 +1,7 @@
 export const SET_AGENDA_LIST = 'SET_AGENDA_LIST';
 export const SET_AGENDA_DETAIL = 'SET_AGENDA_DETAIL';
 export const SET_AGENDA_DETAIL_VOTE_LIST = 'SET_AGENDA_DETAIL_VOTE_LIST';
+export const SET_RELOAD = 'SET_RELOAD';
 
 export interface Agenda {
     id: string;
@@ -39,6 +40,7 @@ export interface AgendaState {
     agendaList: Agenda[];
     agendaDetail: Agenda;
     voteList: Vote[];
+    reloadCount: number;
 }
 
 // for useSelector
@@ -47,6 +49,7 @@ export interface AllAgendaState {
         agendaList: Agenda[];
         agendaDetail: Agenda;
         voteList: Vote[];
+        reloadCount: number;
     }
 }
 
@@ -65,4 +68,9 @@ interface setAgendaDetailVoteListAction {
     payload: Vote[];
 }
 
-export type AgendaActionTypes = setAgendaListAction | setAgendaDetailAction | setAgendaDetailVoteListAction;
+interface setReloadAction {
+    type: typeof SET_RELOAD;
+    payload: number;
+}
+
+export type AgendaActionTypes = setAgendaListAction | setAgendaDetailAction | setAgendaDetailVoteListAction | setReloadAction;

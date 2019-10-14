@@ -8,7 +8,7 @@ import * as firebase from 'firebase/app';
 /** action */
 import { Agenda, AllAgendaState } from '../../../store/agenda/set/types';
 import { setAgendaDetail } from '../../../store/agenda/set/action';
-import { Notice, NoticeState, SnackBarTypeVariation } from '../../../store/notice/types';
+import { NoticeState, SnackBarTypeVariation } from '../../../store/notice/types';
 import { setNotice } from '../../../store/notice/action';
 
 export enum ResultedCodeVariation {
@@ -17,6 +17,7 @@ export enum ResultedCodeVariation {
 }
 
 export const useAgendaGet = () => {
+
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const agendaDetail = useSelector((state: AllAgendaState) => state.agenda.agendaDetail);
@@ -104,6 +105,7 @@ export const useAgendaGet = () => {
             if (error.message === ResultedCodeVariation.not_found) {
                 setError('データが存在しません');
                 dispatch(setNotice({
+                    target: `/agenda/${agendaId}`,
                     count: notice.count + 1,
                     type: SnackBarTypeVariation.error,
                     message: 'データが存在しません',
@@ -113,6 +115,7 @@ export const useAgendaGet = () => {
             } else {
                 setError('データの取得に失敗しました');
                 dispatch(setNotice({
+                    target: `/agenda/${agendaId}`,
                     count: notice.count + 1,
                     type: SnackBarTypeVariation.error,
                     message: 'データの取得に失敗しました',

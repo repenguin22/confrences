@@ -1,4 +1,4 @@
-import { AgendaState, AgendaActionTypes, SET_AGENDA_LIST, SET_AGENDA_DETAIL, SET_AGENDA_DETAIL_VOTE_LIST } from './types';
+import { AgendaState, AgendaActionTypes, SET_AGENDA_LIST, SET_AGENDA_DETAIL, SET_AGENDA_DETAIL_VOTE_LIST, SET_RELOAD } from './types';
 
 const initialState: AgendaState = {
     agendaList: [],
@@ -22,7 +22,8 @@ const initialState: AgendaState = {
         createdAt: new Date(),
         delFlg: false
     },
-    voteList: []
+    voteList: [],
+    reloadCount: 0
 };
 
 export const setAgendaReducer = (state = initialState, action: AgendaActionTypes): AgendaState => {
@@ -33,6 +34,8 @@ export const setAgendaReducer = (state = initialState, action: AgendaActionTypes
             return { ...state, agendaDetail: action.payload };
         case SET_AGENDA_DETAIL_VOTE_LIST:
             return { ...state, voteList: action.payload };
+        case SET_RELOAD:
+            return { ...state, reloadCount: action.payload };
         default:
             return state;
     }

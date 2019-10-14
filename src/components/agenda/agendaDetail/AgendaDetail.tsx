@@ -1,5 +1,6 @@
 /** library */
 import React, { FC, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
 /** Custom Components */
@@ -7,11 +8,15 @@ import Header from '../../header/Header';
 import AgendaDetailTheme from './AgendaDetailTheme';
 import AgendaDetailResult from './AgendaDetailResult';
 import AgendaDetailList from './AgendaDetailList';
-import { CustomSnackBar, SnackBarTypeVariation } from '../../common/CustomSnackBar';
+import { CustomSnackBar } from '../../common/CustomSnackBar';
 
 /** use */
-import { useAgendaGet, ResultedCodeVariation } from './useAgendaGet';
+import { useAgendaGet } from './useAgendaGet';
 import { useVoteCreate, ResultedCodeVariation as voteCreateResultedCodeVariation } from './useVoteCreate';
+
+/** action */
+import { AllAgendaState } from '../../../store/agenda/set/types';
+import { NoticeState } from '../../../store/notice/types';
 
 /** model */
 import { CreateVoteForm } from '../../../store/agenda/put/types';
@@ -70,6 +75,12 @@ const AgendaDetail: FC = () => {
 
     const classes = useStyles();
 
+    const location = useLocation();
+
+    const notice = useSelector((state: NoticeState) => state.notice);
+
+    const reloadCount = useSelector((state: AllAgendaState) => state.agenda.reloadCount);
+
     // State that manages the opening and closing of the voting form dialog
     const [voteDialogOpen, setVoteDialogOpen] = React.useState(false);
 
@@ -88,8 +99,6 @@ const AgendaDetail: FC = () => {
         }
     });
 
-    const [isOpenNum, setIsOpenNum] = React.useState(0);
-
     const currentLocation = useLocation();
     const agendaId = currentLocation.pathname.split('/')[2];
 
@@ -100,7 +109,7 @@ const AgendaDetail: FC = () => {
         if (typeof getAgendaDetail == 'function') {
             getAgendaDetail(agendaId);
         }
-    }, []);
+    }, [reloadCount]);
 
     useEffect(() => {
         if (typeof createVoteResulted !== 'object') {
@@ -111,7 +120,6 @@ const AgendaDetail: FC = () => {
         }
         voteDialogClose();
     }, [createVoteResulted]);
-
 
 
     if (typeof agendaDetail !== 'object' || typeof getAgendaLoading !== 'boolean' || typeof getAgendaError !== 'string') {
@@ -293,13 +301,20 @@ const AgendaDetail: FC = () => {
         </Fab>
     );
 
+    const renderCustomSnackBar = () => {
+        if (notice.target === location.pathname) {
+            return <CustomSnackBar />;
+        }
+        return null;
+    };
+
     return (
         <React.Fragment>
             {renderFloatButton}
             {renderVoteDialog}
             <Header />
             {renderLoadProgressBar()}
-            <CustomSnackBar />
+            {renderCustomSnackBar()}
             <Container maxWidth="xl">
                 <AgendaDetailTheme agendaDetail={agendaDetail} />
                 <AgendaDetailResult agendaDetail={agendaDetail} />

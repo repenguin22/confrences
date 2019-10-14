@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useEffect } from 'react';
+import React, { SyntheticEvent } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { NoticeState } from '../../store/notice/types';
@@ -163,7 +163,7 @@ export const CustomSnackBar = () => {
                         horizontal: 'center',
                     }}
                     open={true}
-                    autoHideDuration={6000}
+                    autoHideDuration={3000}
                     onClose={handleClose}
                 >
                     {renderMySnackBar()}
@@ -177,7 +177,7 @@ export const CustomSnackBar = () => {
                         horizontal: 'center',
                     }}
                     open={true}
-                    autoHideDuration={6000}
+                    autoHideDuration={3000}
                     onClose={handleClose}
                 >
                     {renderMySnackBar()}
@@ -191,7 +191,7 @@ export const CustomSnackBar = () => {
                         horizontal: 'right',
                     }}
                     open={true}
-                    autoHideDuration={6000}
+                    autoHideDuration={3000}
                     onClose={handleClose}
                 >
                     {renderMySnackBar()}

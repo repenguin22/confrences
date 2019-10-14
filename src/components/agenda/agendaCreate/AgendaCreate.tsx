@@ -1,10 +1,12 @@
 /** library */
 import React, { FC, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useHistory, useLocation } from 'react-router-dom';
 
 /** Custom Components */
 import Header from '../../header/Header';
-import { CustomSnackBar, SnackBarTypeVariation } from '../../common/CustomSnackBar';
+import { CustomSnackBar } from '../../common/CustomSnackBar';
+import { NoticeState } from '../../../store/notice/types';
 
 /** model */
 import { CreateAgendaForm } from '../../../store/agenda/put/types';
@@ -67,12 +69,14 @@ const AgendaCreate: FC = () => {
 
     const classes = useStyles();
 
+    const notice = useSelector((state: NoticeState) => state.notice);
+
+    const location = useLocation();
+
     const history = useHistory();
 
     // State to manage how many choices are displayed
     const [displayChoice, setDisplayChoice] = React.useState(INITIAL_CHOICE_DISPLAY_NUM);
-
-    const [isOpenNum, setIsOpenNum] = React.useState(0);
 
     // State that manages form values
     const [localFormParams, setLocalFormParams] = React.useState<CreateAgendaForm>({
@@ -292,6 +296,13 @@ const AgendaCreate: FC = () => {
         return null;
     };
 
+    const renderCustomSnackBar = () => {
+        if (notice.target === location.pathname) {
+            return <CustomSnackBar />;
+        }
+        return null;
+    };
+
     return (
         <React.Fragment>
             <Header />
@@ -359,7 +370,7 @@ const AgendaCreate: FC = () => {
                     </Button>
                 </Box>
                 {renderSubmitProgressBar()}
-                <CustomSnackBar />
+                {renderCustomSnackBar()}
             </Container >
         </React.Fragment >
     );

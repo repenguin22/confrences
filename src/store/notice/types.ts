@@ -1,6 +1,7 @@
 export const SET_NOTICE = 'SET_NOTICE';
 
 export interface Notice {
+    target: string,
     count: number,
     type: string | null,
     message: string | null,
@@ -11,6 +12,7 @@ export interface Notice {
 // for useSelector
 export interface NoticeState {
     notice: {
+        target: string,
         count: number,
         type: string | null,
         message: string | null,

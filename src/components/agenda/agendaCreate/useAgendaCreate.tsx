@@ -8,7 +8,7 @@ import 'firebase/functions';
 
 /** model */
 import { AuthState } from '../../../store/auth/types';
-import { Notice, NoticeState, SnackBarTypeVariation } from '../../../store/notice/types';
+import { NoticeState, SnackBarTypeVariation } from '../../../store/notice/types';
 import { setNotice } from '../../../store/notice/action';
 import { CreateAgendaForm } from '../../../store/agenda/put/types';
 
@@ -37,6 +37,7 @@ export const useAgendaCreate = () => {
             setResulted({ code: ResultedCodeVariation.error, msg: 'サインインしてください', value: '' });
             setLoading(false);
             dispatch(setNotice({
+                target: '/agenda/create',
                 count: notice.count + 1,
                 type: SnackBarTypeVariation.error,
                 message: 'サインインしてください',
@@ -45,7 +46,13 @@ export const useAgendaCreate = () => {
             }));
             return;
         }
-        let choiceList = [agenda.choice1.value, agenda.choice2.value, agenda.choice3.value, agenda.choice4.value];
+        let choiceList = [agenda.choice1.value, agenda.choice2.value];
+        if (agenda.choice3.value !== '') {
+            choiceList.push(agenda.choice3.value);
+        }
+        if (agenda.choice4.value !== '') {
+            choiceList.push(agenda.choice4.value);
+        }
         choiceList.sort();
         let error = false;
         if (choiceList[0] === choiceList[1]) {
@@ -61,6 +68,7 @@ export const useAgendaCreate = () => {
             setResulted({ code: ResultedCodeVariation.error, msg: '同じ選択肢が含まれています', value: '' });
             setLoading(false);
             dispatch(setNotice({
+                target: '/agenda/create',
                 count: notice.count + 1,
                 type: SnackBarTypeVariation.error,
                 message: '同じ選択肢が含まれています',
@@ -86,6 +94,7 @@ export const useAgendaCreate = () => {
             }
             setResulted({ code: ResultedCodeVariation.success, msg: '投稿に成功しました', value: result.data.value });
             dispatch(setNotice({
+                target: '/agenda/create',
                 count: notice.count + 1,
                 type: SnackBarTypeVariation.success,
                 message: '投稿に成功しました',
@@ -95,6 +104,7 @@ export const useAgendaCreate = () => {
         } catch (error) {
             setResulted({ code: ResultedCodeVariation.error, msg: '投稿に失敗しました。時間をおいて再実施してください', value: '' });
             dispatch(setNotice({
+                target: '/agenda/create',
                 count: notice.count + 1,
                 type: SnackBarTypeVariation.error,
                 message: '投稿に失敗しました。時間をおいて再実施してください',

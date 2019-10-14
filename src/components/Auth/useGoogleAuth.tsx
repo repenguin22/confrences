@@ -7,7 +7,7 @@ import * as firebase from 'firebase/app';
 
 /** action */
 import { signIn } from '../../store/auth/action';
-import { Notice, NoticeState, SnackBarTypeVariation } from '../../store/notice/types';
+import { NoticeState, SnackBarTypeVariation } from '../../store/notice/types';
 import { setNotice } from '../../store/notice/action';
 /** model */
 import { Auth } from '../../store/auth/types';
@@ -34,10 +34,7 @@ export const useGoogleAuth = () => {
         try {
             const uid = auth.uid;
             if (!uid) {
-                throw Object.assign(
-                    new Error('Google Auth Fatal Error'),
-                    { code: 500 }
-                );
+                throw new Error('googole auth fatal error');
             }
             let db = firebase.firestore();
             await db.collection('user').doc(uid).set({
@@ -47,11 +44,12 @@ export const useGoogleAuth = () => {
             }, { merge: true });
             dispatch(signIn(auth));
             setLoading(false);
-            setResulted({ code: ResultedCodeVariation.success, msg: '', value: '' });
+            setResulted({ code: ResultedCodeVariation.success, msg: 'aaa', value: '' });
         } catch (error) {
             setResulted({ code: ResultedCodeVariation.error, msg: 'ログインに失敗しました', value: `code:${error.code} ${error.message}` });
             setLoading(false);
             dispatch(setNotice({
+                target: 'all',
                 count: notice.count + 1,
                 type: SnackBarTypeVariation.success,
                 message: '投票に成功しました',

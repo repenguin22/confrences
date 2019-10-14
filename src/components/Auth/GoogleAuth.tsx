@@ -1,6 +1,5 @@
 /** library */
 import React, { FC } from 'react';
-//import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 /** firebase lib */
@@ -8,13 +7,14 @@ import * as firebase from 'firebase/app';
 import 'firebase/auth';
 
 /** Custom Components */
-import { CustomSnackBar, SnackBarTypeVariation } from '../common/CustomSnackBar';
+import { CustomSnackBar } from '../common/CustomSnackBar';
 
 /** action */
 import { Auth, AuthState } from '../../store/auth/types';
+import { NoticeState } from '../../store/notice/types';
 
 /** useAgendaCreate */
-import { useGoogleAuth, ResultedCodeVariation } from './useGoogleAuth';
+import { useGoogleAuth } from './useGoogleAuth';
 
 /** Material UI Components */
 import { makeStyles } from '@material-ui/core/styles';
@@ -35,6 +35,8 @@ const GoogleAuth: FC = () => {
 
     const loginedUserId: string | null = useSelector((state: AuthState) => state.auth.uid);
 
+    const notice = useSelector((state: NoticeState) => state.notice);
+
     const [putAuth, loading, resulted] = useGoogleAuth();
 
     if (typeof putAuth !== 'function' || typeof loading !== 'boolean' || typeof resulted !== 'object') {
@@ -46,17 +48,15 @@ const GoogleAuth: FC = () => {
         try {
             const result = await firebase.auth().signInWithPopup(provider);
             if (!result.user) {
-                throw Object.assign(
-                    new Error('Google Auth Fatal Error'),
-                    { code: 500 }
-                );
+                throw new Error('googole auth fatal error');
             }
             const auth: Auth = {
                 uid: result.user.uid,
                 displayName: result.user.displayName,
                 photoURL: result.user.photoURL
             };
-            putAuth(auth);
+            await putAuth(auth);
+            window.location.reload();
         } catch (error) {
             let errorCode = error.code;
             let errorMessage = error.message;
@@ -65,8 +65,14 @@ const GoogleAuth: FC = () => {
         }
     };
 
-    const renderButton = () => {
+    const renderCustomSnackBar = () => {
+        if (notice.target === 'all') {
+            return <CustomSnackBar />;
+        }
+        return null;
+    };
 
+    const renderButton = () => {
         if (loginedUserId) {
             return null;
         }
@@ -75,7 +81,7 @@ const GoogleAuth: FC = () => {
                 <Button onClick={onSignIn} variant="contained" color="secondary" className={classes.button}>
                     Sign In With Google
                 </Button>
-                <CustomSnackBar />
+                {renderCustomSnackBar()}
             </React.Fragment>
         );
     };

@@ -8,10 +8,12 @@ import 'firebase/functions';
 
 /** model */
 import { AuthState } from '../../../store/auth/types';
+import { AllAgendaState } from '../../../store/agenda/set/types';
+import { setReload } from '../../../store/agenda/set/action';
 import { CreateVoteForm } from '../../../store/agenda/put/types';
 
 /** action */
-import { Notice, NoticeState, SnackBarTypeVariation } from '../../../store/notice/types';
+import { NoticeState, SnackBarTypeVariation } from '../../../store/notice/types';
 import { setNotice } from '../../../store/notice/action';
 
 export enum ResultedCodeVariation {
@@ -32,6 +34,7 @@ export const useVoteCreate = () => {
 
     const auth = useSelector((state: AuthState) => state.auth);
     const notice = useSelector((state: NoticeState) => state.notice);
+    const reloadCount = useSelector((state: AllAgendaState) => state.agenda.reloadCount);
 
     const putVoteCreate = useCallback(async (agendaId: string, choiceList: string[], formValues: CreateVoteForm) => {
         setLoading(true);
@@ -39,6 +42,7 @@ export const useVoteCreate = () => {
             setLoading(false);
             setResulted({ code: ResultedCodeVariation.error, msg: 'サインインしてください', value: '' });
             dispatch(setNotice({
+                target: `/agenda/${agendaId}`,
                 count: notice.count + 1,
                 type: SnackBarTypeVariation.error,
                 message: 'サインインしてください',
@@ -64,16 +68,19 @@ export const useVoteCreate = () => {
             setResulted({ code: ResultedCodeVariation.success, msg: '投票に成功しました', value: result.data.value });
             setLoading(false);
             dispatch(setNotice({
+                target: `/agenda/${agendaId}`,
                 count: notice.count + 1,
                 type: SnackBarTypeVariation.success,
                 message: '投票に成功しました',
                 vertical: 'top',
                 horizontal: 'center'
             }));
+            dispatch(setReload(reloadCount + 1));
         } catch (error) {
             setResulted({ code: ResultedCodeVariation.error, msg: '投票に失敗しました。時間をおいて再実施してください', value: '' });
             setLoading(false);
             dispatch(setNotice({
+                target: `/agenda/${agendaId}`,
                 count: notice.count + 1,
                 type: SnackBarTypeVariation.error,
                 message: '投票に失敗しました。時間をおいて再実施してください',

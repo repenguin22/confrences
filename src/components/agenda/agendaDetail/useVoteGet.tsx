@@ -8,7 +8,6 @@ import * as firebase from 'firebase/app';
 /** action */
 import { Vote, AllAgendaState } from '../../../store/agenda/set/types';
 import { setAgendaDetailVoteList } from '../../../store/agenda/set/action';
-import { any } from 'prop-types';
 
 export enum ResultedCodeVariation {
     not_found = '404',

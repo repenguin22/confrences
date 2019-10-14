@@ -8,7 +8,9 @@ import Pagination from 'material-ui-flat-pagination';
 import AgendaDetailThemeByList from './AgendaDetailThemeByList';
 
 /** action */
-import { Auth, AuthState } from '../../../store/auth/types';
+import { AuthState } from '../../../store/auth/types';
+import { AllAgendaState } from '../../../store/agenda/set/types';
+import { setReload } from '../../../store/agenda/set/action';
 import { useVoteGet } from './useVoteGet';
 
 /** model */
@@ -68,15 +70,12 @@ const AgendaDetailList: FC<AgendaDetailListProps> = ({ agendaDetail }) => {
 
     const loginedUserId: string | null = useSelector((state: AuthState) => state.auth.uid);
 
+    const reloadCount = useSelector((state: AllAgendaState) => state.agenda.reloadCount);
+
     const currentLocation = useLocation();
     const agendaId = currentLocation.pathname.split('/')[2];
 
-    //const voteList = useSelector(state => state.theme.themeDetailVoteList);
-    //const reloadCount = useSelector(state => state.theme.themeDetailVoteReload);
-
     const [dialogOpen, setDialogOpen] = React.useState(false);
-
-    const [localReloadCount, setLocalReloadCount] = React.useState(0);
 
     const [sortAnchorEl, setSortAnchorEl] = React.useState<null | HTMLElement>(null);
     const [sort, setSort] = React.useState(NEW);
@@ -93,7 +92,7 @@ const AgendaDetailList: FC<AgendaDetailListProps> = ({ agendaDetail }) => {
         if (typeof getVoteList === 'function') {
             getVoteList(agendaId);
         }
-    }, [localReloadCount]);
+    }, [reloadCount]);
 
     if (!Array.isArray(voteList) || typeof loading !== 'boolean' || typeof error !== 'string') {
         return null;
@@ -116,7 +115,7 @@ const AgendaDetailList: FC<AgendaDetailListProps> = ({ agendaDetail }) => {
 
     /** reload button handler */
     const reloadHandleClick = () => {
-        setLocalReloadCount(localReloadCount + 1);
+        dispatch(setReload(reloadCount + 1));
         setOffset(0);
     };
 
