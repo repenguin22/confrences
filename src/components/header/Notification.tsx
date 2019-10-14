@@ -20,8 +20,8 @@ const Notification: FC = () => {
         }
         return (
             <React.Fragment>
-                <IconButton aria-label="show 17 new notifications" color="inherit">
-                    <Badge badgeContent={17} color="secondary">
+                <IconButton aria-label="notifications" color="inherit" disabled disableFocusRipple disableRipple>
+                    <Badge color="secondary">
                         <NotificationsIcon />
                     </Badge>
                 </IconButton>

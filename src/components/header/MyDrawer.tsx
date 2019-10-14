@@ -52,12 +52,12 @@ const MyDrawer: FC = () => {
         >
             <List>
                 <Link to="/" className="drawerLink">
-                    <ListItem button key="Populer">
+                    <ListItem button key="Populer" disabled>
                         <ListItemIcon><WbSunnyIcon /></ListItemIcon>
                         <ListItemText primary="Populer" />
                     </ListItem>
                 </Link>
-                <Link to="/new" className="drawerLink">
+                <Link to="/" className="drawerLink">
                     <ListItem button key="New">
                         <ListItemIcon><NewReleasesIcon /></ListItemIcon>
                         <ListItemText primary="New" />

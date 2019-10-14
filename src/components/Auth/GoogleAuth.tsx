@@ -1,5 +1,5 @@
 /** library */
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 /** firebase lib */
@@ -11,7 +11,7 @@ import { CustomSnackBar } from '../common/CustomSnackBar';
 
 /** action */
 import { Auth, AuthState } from '../../store/auth/types';
-import { signIn } from '../../store/auth/action';
+import { signOut } from '../../store/auth/action';
 import { NoticeState } from '../../store/notice/types';
 
 /** useAgendaCreate */
@@ -41,6 +41,25 @@ const GoogleAuth: FC = () => {
     const notice = useSelector((state: NoticeState) => state.notice);
 
     const [putAuth, loading, resulted] = useGoogleAuth();
+
+    useEffect(() => {
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                const auth: Auth = {
+                    uid: user.uid,
+                    displayName: user.displayName,
+                    photoURL: user.photoURL
+                };
+                if (typeof putAuth !== 'function') {
+                    return;
+                }
+                putAuth(auth);
+            }
+            else {
+                dispatch(signOut());
+            }
+        });
+    }, []);
 
     if (typeof putAuth !== 'function' || typeof loading !== 'boolean' || typeof resulted !== 'object') {
         return null;
@@ -77,15 +96,6 @@ const GoogleAuth: FC = () => {
     const renderButton = () => {
         if (loginedUserId) {
             return null;
-        }
-        const currentUser = firebase.auth().currentUser;
-        if (!loginedUserId && currentUser !== null) {
-            const auth: Auth = {
-                uid: currentUser.uid,
-                displayName: currentUser.displayName,
-                photoURL: currentUser.photoURL
-            };
-            dispatch(signIn(auth));
         }
         return (
             <React.Fragment>

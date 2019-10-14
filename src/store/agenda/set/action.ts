@@ -1,4 +1,4 @@
-import { Agenda, Vote, SET_AGENDA_LIST, SET_AGENDA_DETAIL, SET_AGENDA_DETAIL_VOTE_LIST, SET_RELOAD } from './types';
+import { Agenda, Vote, AgendaDetailFavo, SET_AGENDA_LIST, SET_AGENDA_DETAIL, SET_AGENDA_DETAIL_VOTE_LIST, SET_AGENDA_DETAIL_FAVO, SET_RELOAD } from './types';
 
 export const setAgendaList = (agendaList: Agenda[]) => {
     return {
@@ -18,6 +18,13 @@ export const setAgendaDetailVoteList = (voteList: Vote[]) => {
     return {
         type: SET_AGENDA_DETAIL_VOTE_LIST,
         payload: voteList
+    };
+};
+
+export const setAgendaDetailFavo = (favo: AgendaDetailFavo) => {
+    return {
+        type: SET_AGENDA_DETAIL_FAVO,
+        payload: favo
     };
 };
 

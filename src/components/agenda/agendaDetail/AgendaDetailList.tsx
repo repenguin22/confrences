@@ -22,10 +22,10 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import Box from '@material-ui/core/Box';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
+//import Menu from '@material-ui/core/Menu';
+//import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
-import SortIcon from '@material-ui/icons/Sort';
+//import SortIcon from '@material-ui/icons/Sort';
 import ReplayIcon from '@material-ui/icons/Replay';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import Dialog from '@material-ui/core/Dialog';
@@ -55,8 +55,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 // sort order
-const POPULER = 'populer';
-const NEW = 'new';
+//const POPULER = 'populer';
+//const NEW = 'new';
 
 
 interface AgendaDetailListProps {
@@ -77,8 +77,8 @@ const AgendaDetailList: FC<AgendaDetailListProps> = ({ agendaDetail }) => {
 
     const [dialogOpen, setDialogOpen] = React.useState(false);
 
-    const [sortAnchorEl, setSortAnchorEl] = React.useState<null | HTMLElement>(null);
-    const [sort, setSort] = React.useState(NEW);
+    //const [sortAnchorEl, setSortAnchorEl] = React.useState<null | HTMLElement>(null);
+    //const [sort, setSort] = React.useState(NEW);
 
     const [filter, setFilter] = React.useState('');
 
@@ -120,7 +120,7 @@ const AgendaDetailList: FC<AgendaDetailListProps> = ({ agendaDetail }) => {
     };
 
     /** sort Handler */
-    const sortHandleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    /*const sortHandleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setSortAnchorEl(event.currentTarget);
     };
 
@@ -132,7 +132,7 @@ const AgendaDetailList: FC<AgendaDetailListProps> = ({ agendaDetail }) => {
         setSort(sortClass);
         setOffset(0);
         sortHandleClose();
-    };
+    };*/
 
     /** paging GHandler */
     const pagingHandleClick = (offset: number) => {
@@ -179,7 +179,7 @@ const AgendaDetailList: FC<AgendaDetailListProps> = ({ agendaDetail }) => {
 
     const renderAgendaDetailTheme = () => {
         let tmpVoteList = voteList.slice();
-        if (sort === NEW) {
+        /*if (sort === NEW) {
             tmpVoteList.sort((a, b) => { return a.createdAt < b.createdAt ? 1 : -1; });
             tmpVoteList = tmpVoteList.filter((vote) => { return vote.createUserId === loginedUserId; }).concat(tmpVoteList.filter((vote) => { return vote.createUserId !== loginedUserId; }));
         } else if (sort === POPULER) {
@@ -199,14 +199,14 @@ const AgendaDetailList: FC<AgendaDetailListProps> = ({ agendaDetail }) => {
                 return 0;
             });
             tmpVoteList = tmpVoteList.filter((vote) => { return vote.createUserId === loginedUserId; }).concat(tmpVoteList.filter((vote) => { return vote.createUserId !== loginedUserId; }));
-        }
+        }*/
         if (filter !== '') {
             tmpVoteList = tmpVoteList.filter((vote) => { return vote.choice === filter; });
         }
         return tmpVoteList.slice(offset, offset + limit).map((voteDetail, index, array) => {
             return (
                 <React.Fragment key={index}>
-                    <AgendaDetailThemeByList voteDetial={voteDetail} />
+                    <AgendaDetailThemeByList agendaId={agendaDetail.id} voteDetial={voteDetail} />
                     <Box mt={1} />
                 </React.Fragment>
             );
@@ -222,7 +222,7 @@ const AgendaDetailList: FC<AgendaDetailListProps> = ({ agendaDetail }) => {
                             <IconButton onClick={reloadHandleClick}>
                                 <ReplayIcon />
                             </IconButton>
-                            <IconButton onClick={sortHandleClick}>
+                            {/*<IconButton onClick={sortHandleClick}>
                                 <SortIcon />
                             </IconButton>
                             <Menu
@@ -234,7 +234,7 @@ const AgendaDetailList: FC<AgendaDetailListProps> = ({ agendaDetail }) => {
                             >
                                 <MenuItem onClick={event => sortHandleSelected(event, POPULER)} key={POPULER}>評価順</MenuItem>
                                 <MenuItem onClick={event => sortHandleSelected(event, NEW)} key={NEW}>新着順</MenuItem>
-                            </Menu>
+                    </Menu>*/}
                             <IconButton onClick={filterDialogHandleOpen}>
                                 <FilterListIcon />
                             </IconButton>

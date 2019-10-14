@@ -22,7 +22,6 @@ const App: FC = () => {
             <Router>
                 <Switch>
                     <Route path="/" component={AgendaListNew} exact />
-                    <Route path="/agenda/new" component={AgendaListNew} exact />
                     <Route path="/agenda/create" component={AgendaCreate} exact />
                     <Route path="/agenda/:id" component={AgendaDetail} exact />
                 </Switch>

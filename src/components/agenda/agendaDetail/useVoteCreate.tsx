@@ -32,7 +32,6 @@ export const useVoteCreate = () => {
         value: ''
     });
 
-    const auth = useSelector((state: AuthState) => state.auth);
     const notice = useSelector((state: NoticeState) => state.notice);
 
     const putVoteCreate = useCallback(async (agendaId: string, choiceList: string[], formValues: CreateVoteForm) => {

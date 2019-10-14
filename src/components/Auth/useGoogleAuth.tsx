@@ -44,7 +44,7 @@ export const useGoogleAuth = () => {
             }, { merge: true });
             dispatch(signIn(auth));
             setLoading(false);
-            setResulted({ code: ResultedCodeVariation.success, msg: 'aaa', value: '' });
+            setResulted({ code: ResultedCodeVariation.success, msg: '', value: '' });
         } catch (error) {
             setResulted({ code: ResultedCodeVariation.error, msg: 'ログインに失敗しました', value: `code:${error.code} ${error.message}` });
             setLoading(false);
