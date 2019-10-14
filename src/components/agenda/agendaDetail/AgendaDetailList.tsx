@@ -8,8 +8,8 @@ import Pagination from 'material-ui-flat-pagination';
 import AgendaDetailThemeByList from './AgendaDetailThemeByList';
 
 /** action */
-import { AuthState } from '../../../store/auth/types';
 import { AllAgendaState } from '../../../store/agenda/set/types';
+import { AuthState } from '../../../store/auth/types';
 import { setReload } from '../../../store/agenda/set/action';
 import { useVoteGet } from './useVoteGet';
 
@@ -22,10 +22,7 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import Box from '@material-ui/core/Box';
-//import Menu from '@material-ui/core/Menu';
-//import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
-//import SortIcon from '@material-ui/icons/Sort';
 import ReplayIcon from '@material-ui/icons/Replay';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import Dialog from '@material-ui/core/Dialog';
@@ -54,10 +51,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }));
 
-// sort order
-//const POPULER = 'populer';
-//const NEW = 'new';
-
 
 interface AgendaDetailListProps {
     agendaDetail: Agenda
@@ -68,17 +61,13 @@ const AgendaDetailList: FC<AgendaDetailListProps> = ({ agendaDetail }) => {
 
     const dispatch = useDispatch();
 
-    const loginedUserId: string | null = useSelector((state: AuthState) => state.auth.uid);
-
     const reloadCount = useSelector((state: AllAgendaState) => state.agenda.reloadCount);
+    const loginedUserId = useSelector((state: AuthState) => state.auth.uid);
 
     const currentLocation = useLocation();
     const agendaId = currentLocation.pathname.split('/')[2];
 
     const [dialogOpen, setDialogOpen] = React.useState(false);
-
-    //const [sortAnchorEl, setSortAnchorEl] = React.useState<null | HTMLElement>(null);
-    //const [sort, setSort] = React.useState(NEW);
 
     const [filter, setFilter] = React.useState('');
 
@@ -118,21 +107,6 @@ const AgendaDetailList: FC<AgendaDetailListProps> = ({ agendaDetail }) => {
         dispatch(setReload());
         setOffset(0);
     };
-
-    /** sort Handler */
-    /*const sortHandleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        setSortAnchorEl(event.currentTarget);
-    };
-
-    const sortHandleClose = () => {
-        setSortAnchorEl(null);
-    };
-
-    const sortHandleSelected = (event: React.MouseEvent<HTMLLIElement>, sortClass: string) => {
-        setSort(sortClass);
-        setOffset(0);
-        sortHandleClose();
-    };*/
 
     /** paging GHandler */
     const pagingHandleClick = (offset: number) => {
@@ -179,27 +153,7 @@ const AgendaDetailList: FC<AgendaDetailListProps> = ({ agendaDetail }) => {
 
     const renderAgendaDetailTheme = () => {
         let tmpVoteList = voteList.slice();
-        /*if (sort === NEW) {
-            tmpVoteList.sort((a, b) => { return a.createdAt < b.createdAt ? 1 : -1; });
-            tmpVoteList = tmpVoteList.filter((vote) => { return vote.createUserId === loginedUserId; }).concat(tmpVoteList.filter((vote) => { return vote.createUserId !== loginedUserId; }));
-        } else if (sort === POPULER) {
-            tmpVoteList.sort((a, b) => {
-                if (a.goodCount < b.goodCount) {
-                    return 1;
-                }
-                if (a.goodCount > b.goodCount) {
-                    return -1;
-                }
-                if (a.createdAt < b.createdAt) {
-                    return 1;
-                }
-                if (a.createdAt > b.createdAt) {
-                    return -1;
-                }
-                return 0;
-            });
-            tmpVoteList = tmpVoteList.filter((vote) => { return vote.createUserId === loginedUserId; }).concat(tmpVoteList.filter((vote) => { return vote.createUserId !== loginedUserId; }));
-        }*/
+        tmpVoteList = tmpVoteList.filter((vote) => { return vote.createUserId === loginedUserId; }).concat(tmpVoteList.filter((vote) => { return vote.createUserId !== loginedUserId; }));
         if (filter !== '') {
             tmpVoteList = tmpVoteList.filter((vote) => { return vote.choice === filter; });
         }
@@ -222,19 +176,6 @@ const AgendaDetailList: FC<AgendaDetailListProps> = ({ agendaDetail }) => {
                             <IconButton onClick={reloadHandleClick}>
                                 <ReplayIcon />
                             </IconButton>
-                            {/*<IconButton onClick={sortHandleClick}>
-                                <SortIcon />
-                            </IconButton>
-                            <Menu
-                                id="sort"
-                                anchorEl={sortAnchorEl}
-                                keepMounted
-                                open={Boolean(sortAnchorEl)}
-                                onClose={sortHandleClose}
-                            >
-                                <MenuItem onClick={event => sortHandleSelected(event, POPULER)} key={POPULER}>評価順</MenuItem>
-                                <MenuItem onClick={event => sortHandleSelected(event, NEW)} key={NEW}>新着順</MenuItem>
-                    </Menu>*/}
                             <IconButton onClick={filterDialogHandleOpen}>
                                 <FilterListIcon />
                             </IconButton>

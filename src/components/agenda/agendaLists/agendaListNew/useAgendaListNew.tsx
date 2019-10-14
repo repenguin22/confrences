@@ -21,7 +21,7 @@ export const useAgendaListNew = () => {
         try {
             let agendaNewList: Agenda[] = [];
             let db = firebase.firestore();
-            await db.collection('agenda').where('delFlg', '==', false).orderBy('createdAt', 'desc').limit(100).get().then(querySnapshot => {
+            await db.collection('agenda').where('delFlg', '==', false).orderBy('createdAt', 'desc').limit(10000).get().then(querySnapshot => {
                 querySnapshot.forEach(doc => {
                     const tmpAgenda: Agenda = {
                         id: doc.data().id,

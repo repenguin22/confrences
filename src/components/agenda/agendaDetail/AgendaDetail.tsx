@@ -12,11 +12,10 @@ import { CustomSnackBar } from '../../common/CustomSnackBar';
 
 /** use */
 import { useAgendaGet } from './useAgendaGet';
-import { useAgendaDetailFavo } from './useAgendaDetailFavo';
 import { useVoteCreate, ResultedCodeVariation as voteCreateResultedCodeVariation } from './useVoteCreate';
 
 /** action */
-import { AgendaDetailFavo, AllAgendaState } from '../../../store/agenda/set/types';
+import { AllAgendaState } from '../../../store/agenda/set/types';
 import { NoticeState } from '../../../store/notice/types';
 
 /** model */
@@ -43,7 +42,6 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormLabel from '@material-ui/core/FormLabel';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { AuthState } from '../../../store/auth/types';
 
 const useStyles = makeStyles((theme: Theme) => ({
     floaButtonWrapper: {
@@ -73,20 +71,11 @@ const REASON_CHAR_MAX = 90;
 // Maximum number of line breaks
 const REASON_NEWLINE_MAX = 8;
 
-const implementsAgendaDetailFavo = (arg: any): arg is AgendaDetailFavo => {
-    return arg !== null &&
-        typeof arg === 'object' &&
-        typeof arg.agenda === 'boolean' &&
-        Array.isArray(arg.voteList)
-};
-
 const AgendaDetail: FC = () => {
 
     const classes = useStyles();
 
     const location = useLocation();
-
-    const auth = useSelector((state: AuthState) => state.auth);
 
     const notice = useSelector((state: NoticeState) => state.notice);
 
@@ -114,13 +103,11 @@ const AgendaDetail: FC = () => {
     const agendaId = currentLocation.pathname.split('/')[2];
 
     const [agendaDetail, getAgendaDetail, getAgendaLoading, getAgendaError] = useAgendaGet();
-    const [agendaDetailFavo, getAgendaDetailFavo, getAgendaDetailFavoLoading, getAgendaDetailFavoError] = useAgendaDetailFavo();
     const [putVoteCreate, createVoteLoading, createVoteResulted] = useVoteCreate();
 
     useEffect(() => {
-        if (typeof getAgendaDetail === 'function' && typeof getAgendaDetailFavo === 'function') {
+        if (typeof getAgendaDetail === 'function') {
             getAgendaDetail(agendaId);
-            getAgendaDetailFavo(agendaId);
         }
     }, [reloadCount]);
 
@@ -135,9 +122,6 @@ const AgendaDetail: FC = () => {
     }, [createVoteResulted]);
 
     if (typeof agendaDetail !== 'object' || typeof getAgendaLoading !== 'boolean' || typeof getAgendaError !== 'string') {
-        return null;
-    }
-    if (typeof agendaDetailFavo !== 'object' || typeof getAgendaDetailFavoLoading !== 'boolean' || typeof getAgendaDetailFavoError !== 'string') {
         return null;
     }
     if (typeof putVoteCreate !== 'function' || typeof createVoteLoading !== 'boolean' || typeof createVoteResulted !== 'object') {
@@ -171,9 +155,6 @@ const AgendaDetail: FC = () => {
 
     // A function that draws a radio button of choices
     const renderChoiceRadioGroup = () => {
-        if (implementsAgendaDetailFavo(agendaDetail)) {
-            return;
-        }
         if (agendaDetail.id === '') {
             return null;
         }
@@ -246,9 +227,6 @@ const AgendaDetail: FC = () => {
             }
         }
         if (errorCount > 0) {
-            return;
-        }
-        if (implementsAgendaDetailFavo(agendaDetail)) {
             return;
         }
         let choices = [];
@@ -328,10 +306,6 @@ const AgendaDetail: FC = () => {
         }
         return null;
     };
-
-    if (implementsAgendaDetailFavo(agendaDetail)) {
-        return null;
-    }
 
     return (
         <React.Fragment>

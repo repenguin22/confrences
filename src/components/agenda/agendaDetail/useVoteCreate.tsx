@@ -8,7 +8,6 @@ import 'firebase/auth';
 import 'firebase/functions';
 
 /** model */
-import { AuthState } from '../../../store/auth/types';
 import { setReload } from '../../../store/agenda/set/action';
 import { CreateVoteForm } from '../../../store/agenda/put/types';
 
@@ -51,6 +50,20 @@ export const useVoteCreate = () => {
             return;
         }
         try {
+            const querySnapshot = await firebase.firestore().collection('agenda').doc(agendaId).collection('vote').where('createUserId', '==', currentUser.uid).get();
+            if (!querySnapshot.empty) {
+                setLoading(false);
+                setResulted({ code: ResultedCodeVariation.error, msg: '投票は一度きりです', value: '' });
+                dispatch(setNotice({
+                    target: `/agenda/${agendaId}`,
+                    count: notice.count + 1,
+                    type: SnackBarTypeVariation.error,
+                    message: '投票は一度きりです',
+                    vertical: 'top',
+                    horizontal: 'center'
+                }));
+                return;
+            }
             const choiceIndex = ['choice1Count', 'choice2Count', 'choice3Count', 'choice4Count'];
             let createVote = firebase.functions().httpsCallable('createVote');
             const result = await createVote({

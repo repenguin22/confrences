@@ -7,7 +7,7 @@ import * as firebase from 'firebase/app';
 
 /** action */
 import { Agenda, AllAgendaState } from '../../../store/agenda/set/types';
-import { setAgendaDetail, setAgendaDetailFavo } from '../../../store/agenda/set/action';
+import { setAgendaDetail } from '../../../store/agenda/set/action';
 import { NoticeState, SnackBarTypeVariation } from '../../../store/notice/types';
 import { setNotice } from '../../../store/notice/action';
 
@@ -21,7 +21,6 @@ export const useAgendaGet = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const agendaDetail = useSelector((state: AllAgendaState) => state.agenda.agendaDetail);
-    const agendaDetailFavo = useSelector((state: AllAgendaState) => state.agenda.favo);
     const notice = useSelector((state: NoticeState) => state.notice);
 
     const dispatch = useDispatch();

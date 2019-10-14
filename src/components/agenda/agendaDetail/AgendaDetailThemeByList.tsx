@@ -1,14 +1,8 @@
 /** library */
 import React, { FC } from 'react';
-//import { useSelector } from 'react-redux';
 
 /** model */
 import { Vote } from '../../../store/agenda/set/types';
-
-//import { AllAgendaState } from '../../../store/agenda/set/types';
-
-/** use */
-//import { useThumbUp, ResultedCodeVariation } from './useThumbUp';
 
 /** util */
 import convertFormat from '../../../utils/convertFormat';
@@ -62,66 +56,6 @@ interface AgendaDetailThemeByListProps {
 
 const AgendaDetailThemeByList: FC<AgendaDetailThemeByListProps> = ({ agendaId, voteDetial }) => {
     const classes = useStyles();
-
-    //let agendaDetailFavo = useSelector((state: AllAgendaState) => state.agenda.favo);
-    //const [thumbUpId, selectedThumbUpId] = React.useState(0);
-    //const [up, changeUp] = React.useState(0);
-    //const [userFavList, setUserFavList] = React.useState(agendaDetailFavo.voteList);
-    //const [putVoteGood, loading, resulted] = useThumbUp();
-
-
-    /*useEffect(() => {
-        changeUp(voteDetial.goodCount);
-    }, [voteDetial]);
-
-    useEffect(() => {
-        if (typeof resulted !== 'object') {
-            return;
-        }
-        if (resulted.code === ResultedCodeVariation.success && resulted.isGood) {
-            selectedThumbUpId(1);
-            changeUp(up + 1);
-            setUserFavList(userFavList.concat(resulted.value));
-        } else if (resulted.code === ResultedCodeVariation.success && !resulted.isGood) {
-            selectedThumbUpId(0);
-            changeUp(up - 1);
-            setUserFavList(userFavList.filter((id) => id !== resulted.value));
-        }
-    }, [resulted]);*/
-
-
-    /*if (typeof putVoteGood !== 'function' || typeof loading !== 'boolean' || typeof resulted !== 'object') {
-        return null;
-    }*/
-
-    /*const thunbUpDownOnClick = (event: React.MouseEvent<HTMLButtonElement>, voteId: string, isGood: boolean) => {
-        if (!thumbUpId) {
-            putVoteGood(agendaId, voteId, isGood);
-        }
-
-    };*/
-
-
-    /*const renderThumbUpIcon = () => {
-        let className = 'material-icons';
-        if (userFavList.includes(voteDetial.id)) {
-            className += ' blue';
-        }
-        return (
-            <React.Fragment>
-                <i className={className}>thumb_up</i>
-                <span>{up}</span>
-            </React.Fragment>
-        );
-    };*/
-
-    /*const renderThumbUp = () => {
-        return (
-            <IconButton aria-label="thumb_up" size="small" onClick={event => thunbUpDownOnClick(event, voteDetial.id, userFavList.includes(voteDetial.id))}>
-                {renderThumbUpIcon()}
-            </IconButton>
-        );
-    };*/
 
     const renderAvatar = () => {
         if (voteDetial.createUserPhotoURL === null || voteDetial.createUserPhotoURL === '') {

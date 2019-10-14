@@ -43,7 +43,7 @@ const AgendaListNew: FC = () => {
 
     const [selectedId, setselectedId] = React.useState('');
     const [offset, setOffset] = React.useState(0);
-    const limit = 20;
+    const limit = 50;
 
     const [agendaList, getAgendaListNew, loading, error] = useAgendaListNew();
 

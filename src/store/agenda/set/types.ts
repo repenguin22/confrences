@@ -1,7 +1,6 @@
 export const SET_AGENDA_LIST = 'SET_AGENDA_LIST';
 export const SET_AGENDA_DETAIL = 'SET_AGENDA_DETAIL';
 export const SET_AGENDA_DETAIL_VOTE_LIST = 'SET_AGENDA_DETAIL_VOTE_LIST';
-export const SET_AGENDA_DETAIL_FAVO = 'SET_AGENDA_DETAIL_FAVO';
 export const SET_RELOAD = 'SET_RELOAD';
 
 export interface Agenda {
@@ -37,16 +36,10 @@ export interface Vote {
     delFlg: boolean
 }
 
-export interface AgendaDetailFavo {
-    agenda: boolean,
-    voteList: string[]
-}
-
 export interface AgendaState {
     agendaList: Agenda[];
     agendaDetail: Agenda;
     voteList: Vote[];
-    favo: AgendaDetailFavo;
     reloadCount: number;
 }
 
@@ -56,7 +49,6 @@ export interface AllAgendaState {
         agendaList: Agenda[];
         agendaDetail: Agenda;
         voteList: Vote[];
-        favo: AgendaDetailFavo;
         reloadCount: number;
     }
 }
@@ -76,13 +68,8 @@ interface setAgendaDetailVoteListAction {
     payload: Vote[];
 }
 
-interface setAgendaDetailFavoAction {
-    type: typeof SET_AGENDA_DETAIL_FAVO;
-    payload: AgendaDetailFavo;
-}
-
 interface setReloadAction {
     type: typeof SET_RELOAD;
 }
 
-export type AgendaActionTypes = setAgendaListAction | setAgendaDetailAction | setAgendaDetailVoteListAction | setAgendaDetailFavoAction | setReloadAction;
+export type AgendaActionTypes = setAgendaListAction | setAgendaDetailAction | setAgendaDetailVoteListAction | setReloadAction;

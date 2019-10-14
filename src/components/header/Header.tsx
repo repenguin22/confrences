@@ -112,9 +112,6 @@ const Header: FC = () => {
             open={Boolean(profileMenuOpen)}
             onClose={handleProfileMenuClose}
         >
-            <Link to={'/'} className="myAccountLink">
-                <MenuItem onClick={handleProfileMenuClose}>My account</MenuItem>
-            </Link>
             <MenuItem onClick={handleLogoutDialogClickOpen}>Logout</MenuItem>
         </Menu >
     );
