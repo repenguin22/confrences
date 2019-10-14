@@ -103,10 +103,10 @@ const AgendaDetailResult: FC<AgendaDetailResultProps> = ({ agendaDetail }) => {
             }
             return (
                 <React.Fragment key={index}>
-                    <Typography variant="h6" color="textPrimary" component="p">
+                    <Typography variant="h5" color="textPrimary" component="p">
                         {choice.value}
                     </Typography>
-                    <Typography variant="caption" color="textSecondary" component="p">
+                    <Typography variant="caption" color="textPrimary" component="p">
                         {`割合：${percentage}% 投票数：${choice.count}`}
                     </Typography>
                     {getBorderLinearProgressColor(index, percentage)}

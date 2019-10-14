@@ -57,9 +57,9 @@ const AgendaDetailTheme: FC<AgendaDetailThemeProps> = ({ agendaDetail }) => {
     // render avatar
     const renderAvatar = () => {
         if (agendaDetail.createUserPhotoURL === null || agendaDetail.createUserPhotoURL === '') {
-            return <Avatar aria-label="recipe" className={classes.avatar}>A</Avatar>;
+            return <Avatar alt="Avatar" className={classes.avatar}>A</Avatar>;
         }
-        return <Avatar aria-label="recipe" src={agendaDetail.createUserPhotoURL} className={classes.avatar} />;
+        return <Avatar alt="Avatar" src={agendaDetail.createUserPhotoURL} className={classes.avatar} />;
     };
 
     const cnvFmt = new convertFormat();
@@ -70,16 +70,16 @@ const AgendaDetailTheme: FC<AgendaDetailThemeProps> = ({ agendaDetail }) => {
                 <CardHeader
                     avatar={renderAvatar()}
                     title={agendaDetail.subject.replace(/\\n/g, '\n')}
-                    subheader={`${cnvFmt.convertYMD(agendaDetail.createdAt)} author: ${agendaDetail.createUserName}`}
+                    subheader={`${cnvFmt.convertYMD(agendaDetail.createdAt)} 作成者: ${agendaDetail.createUserName}`}
                     style={{ whiteSpace: 'pre-line' }}
                 />
                 <CardContent>
-                    <Typography variant="body2" color="textSecondary" component="p" style={{ whiteSpace: 'pre-line' }}>
+                    <Typography variant="body2" color="textPrimary" component="p" style={{ whiteSpace: 'pre-line' }}>
                         {agendaDetail.overview.replace(/\\n/g, '\n')}
                     </Typography>
                 </CardContent>
                 <CardActions disableSpacing>
-                    <FacebookShareButton title={agendaDetail.subject} url={`https://confrence-1568633251505.firebaseapp.com${location.pathname}`}>
+                    <FacebookShareButton url={`https://confrence-1568633251505.firebaseapp.com${location.pathname}`}>
                         <FacebookIcon size={35} round />
                     </FacebookShareButton>
                     <TwitterShareButton url={`https://confrence-1568633251505.firebaseapp.com${location.pathname}`}>

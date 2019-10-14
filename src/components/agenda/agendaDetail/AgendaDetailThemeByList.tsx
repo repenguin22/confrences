@@ -59,9 +59,9 @@ const AgendaDetailThemeByList: FC<AgendaDetailThemeByListProps> = ({ agendaId, v
 
     const renderAvatar = () => {
         if (voteDetial.createUserPhotoURL === null || voteDetial.createUserPhotoURL === '') {
-            return <Avatar aria-label="recipe" className={classes.avatar}>A</Avatar>;
+            return <Avatar alt="Avatar" className={classes.avatar}>A</Avatar>;
         }
-        return <Avatar aria-label="recipe" src={voteDetial.createUserPhotoURL} className={classes.avatar} />;
+        return <Avatar alt="Avatar" src={voteDetial.createUserPhotoURL} className={classes.avatar} />;
     };
 
     const cnvFmt = new convertFormat();
@@ -72,10 +72,10 @@ const AgendaDetailThemeByList: FC<AgendaDetailThemeByListProps> = ({ agendaId, v
                 <CardHeader
                     avatar={renderAvatar()}
                     title={voteDetial.choice}
-                    subheader={`${cnvFmt.convertYMD(voteDetial.createdAt)} author: ${voteDetial.createUserName}`}
+                    subheader={`${cnvFmt.convertYMD(voteDetial.createdAt)} 作成者: ${voteDetial.createUserName}`}
                 />
                 <CardContent>
-                    <Typography variant="body2" color="textSecondary" component="p" style={{ whiteSpace: 'pre-line' }}>
+                    <Typography variant="body2" color="textPrimary" component="p" style={{ whiteSpace: 'pre-line' }}>
                         {voteDetial.reason.replace(/\\n/g, '\n')}
                     </Typography>
                 </CardContent>

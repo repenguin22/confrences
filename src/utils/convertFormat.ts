@@ -9,9 +9,9 @@ class convertFormat {
         var d = ('0' + _d.getDate()).slice(-2);
         var H = ('0' + _d.getHours()).slice(-2);
         var i = ('0' + _d.getMinutes()).slice(-2);
-        var s = ('0' + _d.getSeconds()).slice(-2);
+        //var s = ('0' + _d.getSeconds()).slice(-2);
 
-        return `${Y}/${m}/${d} ${H}:${i}:${s}`;
+        return `${Y}/${m}/${d} ${H}:${i}`;
     }
 }
 
