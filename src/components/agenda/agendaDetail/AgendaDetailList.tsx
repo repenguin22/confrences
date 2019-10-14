@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         margin: theme.spacing(1),
     },
     box: {
-        width: '200px'
+        width: '300px'
     },
 }));
 
