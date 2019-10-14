@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 /** firebase */
 import * as firebase from 'firebase/app';
+import 'firebase/auth';
 import 'firebase/functions';
 
 /** model */
@@ -28,12 +29,12 @@ export const useAgendaCreate = () => {
 
     const dispatch = useDispatch();
 
-    const auth = useSelector((state: AuthState) => state.auth);
     const notice = useSelector((state: NoticeState) => state.notice);
 
     const putAgendaCretae = useCallback(async (agenda: CreateAgendaForm) => {
         setLoading(true);
-        if (auth.uid === null || auth.displayName === null || auth.photoURL === null) {
+        const currentUser = firebase.auth().currentUser;
+        if (!currentUser) {
             setResulted({ code: ResultedCodeVariation.error, msg: 'サインインしてください', value: '' });
             setLoading(false);
             dispatch(setNotice({
@@ -86,8 +87,8 @@ export const useAgendaCreate = () => {
                 choice2: agenda.choice2.value,
                 choice3: agenda.choice3.value,
                 choice4: agenda.choice4.value,
-                displayName: auth.displayName,
-                photoURL: auth.photoURL
+                displayName: currentUser.displayName,
+                photoURL: currentUser.photoURL
             });
             if (result.data.code === ResultedCodeVariation.error) {
                 throw new Error(ResultedCodeVariation.error);

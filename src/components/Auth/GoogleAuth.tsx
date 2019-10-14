@@ -1,6 +1,6 @@
 /** library */
-import React, { FC } from 'react';
-import { useSelector } from 'react-redux';
+import React, { FC, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 /** firebase lib */
 import * as firebase from 'firebase/app';
@@ -11,6 +11,7 @@ import { CustomSnackBar } from '../common/CustomSnackBar';
 
 /** action */
 import { Auth, AuthState } from '../../store/auth/types';
+import { signIn } from '../../store/auth/action';
 import { NoticeState } from '../../store/notice/types';
 
 /** useAgendaCreate */
@@ -19,6 +20,7 @@ import { useGoogleAuth } from './useGoogleAuth';
 /** Material UI Components */
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import { sign } from 'crypto';
 
 const useStyles = makeStyles(theme => ({
     button: {
@@ -32,6 +34,8 @@ const useStyles = makeStyles(theme => ({
 const GoogleAuth: FC = () => {
 
     const classes = useStyles();
+
+    const dispatch = useDispatch();
 
     const loginedUserId: string | null = useSelector((state: AuthState) => state.auth.uid);
 
@@ -55,8 +59,7 @@ const GoogleAuth: FC = () => {
                 displayName: result.user.displayName,
                 photoURL: result.user.photoURL
             };
-            await putAuth(auth);
-            window.location.reload();
+            putAuth(auth);
         } catch (error) {
             let errorCode = error.code;
             let errorMessage = error.message;
@@ -75,6 +78,15 @@ const GoogleAuth: FC = () => {
     const renderButton = () => {
         if (loginedUserId) {
             return null;
+        }
+        const currentUser = firebase.auth().currentUser;
+        if (!loginedUserId && currentUser !== null) {
+            const auth: Auth = {
+                uid: currentUser.uid,
+                displayName: currentUser.displayName,
+                photoURL: currentUser.photoURL
+            };
+            dispatch(signIn(auth));
         }
         return (
             <React.Fragment>

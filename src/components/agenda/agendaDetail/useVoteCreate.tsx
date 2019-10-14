@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 /** firebase */
 import * as firebase from 'firebase/app';
+import 'firebase/auth';
 import 'firebase/functions';
 
 /** model */
@@ -38,7 +39,8 @@ export const useVoteCreate = () => {
 
     const putVoteCreate = useCallback(async (agendaId: string, choiceList: string[], formValues: CreateVoteForm) => {
         setLoading(true);
-        if (auth.uid === null || auth.displayName === null || auth.photoURL === null) {
+        const currentUser = firebase.auth().currentUser;
+        if (!currentUser) {
             setLoading(false);
             setResulted({ code: ResultedCodeVariation.error, msg: 'サインインしてください', value: '' });
             dispatch(setNotice({
