@@ -8,7 +8,6 @@ import 'firebase/auth';
 import 'firebase/functions';
 
 /** model */
-import { AuthState } from '../../../store/auth/types';
 import { NoticeState, SnackBarTypeVariation } from '../../../store/notice/types';
 import { setNotice } from '../../../store/notice/action';
 import { CreateAgendaForm } from '../../../store/agenda/put/types';

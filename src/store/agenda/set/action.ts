@@ -21,9 +21,8 @@ export const setAgendaDetailVoteList = (voteList: Vote[]) => {
     };
 };
 
-export const setReload = (reloadCount: number) => {
+export const setReload = () => {
     return {
-        type: SET_RELOAD,
-        payload: reloadCount
+        type: SET_RELOAD
     };
 };

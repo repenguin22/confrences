@@ -1,5 +1,5 @@
 /** library */
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 /** firebase lib */
@@ -20,7 +20,6 @@ import { useGoogleAuth } from './useGoogleAuth';
 /** Material UI Components */
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import { sign } from 'crypto';
 
 const useStyles = makeStyles(theme => ({
     button: {

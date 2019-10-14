@@ -9,7 +9,6 @@ import 'firebase/functions';
 
 /** model */
 import { AuthState } from '../../../store/auth/types';
-import { AllAgendaState } from '../../../store/agenda/set/types';
 import { setReload } from '../../../store/agenda/set/action';
 import { CreateVoteForm } from '../../../store/agenda/put/types';
 
@@ -35,7 +34,6 @@ export const useVoteCreate = () => {
 
     const auth = useSelector((state: AuthState) => state.auth);
     const notice = useSelector((state: NoticeState) => state.notice);
-    const reloadCount = useSelector((state: AllAgendaState) => state.agenda.reloadCount);
 
     const putVoteCreate = useCallback(async (agendaId: string, choiceList: string[], formValues: CreateVoteForm) => {
         setLoading(true);
@@ -61,8 +59,8 @@ export const useVoteCreate = () => {
                 choice: formValues.choice.value,
                 reason: formValues.reason.value,
                 selectedChoiceIndex: choiceIndex[choiceList.indexOf(formValues.choice.value)],
-                displayName: auth.displayName,
-                photoURL: auth.photoURL
+                displayName: currentUser.displayName,
+                photoURL: currentUser.photoURL
             });
             if (result.data.code === ResultedCodeVariation.error) {
                 throw new Error(ResultedCodeVariation.error);
@@ -77,7 +75,7 @@ export const useVoteCreate = () => {
                 vertical: 'top',
                 horizontal: 'center'
             }));
-            dispatch(setReload(reloadCount + 1));
+            dispatch(setReload());
         } catch (error) {
             setResulted({ code: ResultedCodeVariation.error, msg: '投票に失敗しました。時間をおいて再実施してください', value: '' });
             setLoading(false);

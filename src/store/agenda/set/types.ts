@@ -70,7 +70,6 @@ interface setAgendaDetailVoteListAction {
 
 interface setReloadAction {
     type: typeof SET_RELOAD;
-    payload: number;
 }
 
 export type AgendaActionTypes = setAgendaListAction | setAgendaDetailAction | setAgendaDetailVoteListAction | setReloadAction;

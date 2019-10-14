@@ -5,7 +5,7 @@ export const setNotice = (notice: Notice) => {
         type: SET_NOTICE,
         payload: {
             target: notice.target,
-            count: notice.count,
+            //count: notice.count,
             type: notice.type,
             message: notice.message,
             vertical: notice.vertical,

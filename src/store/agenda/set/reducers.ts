@@ -35,7 +35,7 @@ export const setAgendaReducer = (state = initialState, action: AgendaActionTypes
         case SET_AGENDA_DETAIL_VOTE_LIST:
             return { ...state, voteList: action.payload };
         case SET_RELOAD:
-            return { ...state, reloadCount: action.payload };
+            return { ...state, reloadCount: state.reloadCount + 1 };
         default:
             return state;
     }

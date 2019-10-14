@@ -15,7 +15,7 @@ export const noticeReducer = (state = initialState, action: NoticeActionTypes): 
             return {
                 ...state,
                 target: action.payload.target,
-                count: action.payload.count,
+                count: state.count + 1,
                 type: action.payload.type,
                 message: action.payload.message,
                 vertical: action.payload.vertical,

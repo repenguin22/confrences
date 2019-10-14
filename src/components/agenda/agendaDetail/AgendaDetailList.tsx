@@ -115,7 +115,7 @@ const AgendaDetailList: FC<AgendaDetailListProps> = ({ agendaDetail }) => {
 
     /** reload button handler */
     const reloadHandleClick = () => {
-        dispatch(setReload(reloadCount + 1));
+        dispatch(setReload());
         setOffset(0);
     };
 
