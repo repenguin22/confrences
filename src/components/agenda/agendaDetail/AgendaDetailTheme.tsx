@@ -1,8 +1,6 @@
 /** library */
 import React, { FC } from 'react';
-
-/** Custom Components */
-//import ShowMoreMenu from '../../common/ShowMoreMenu';
+import { useLocation } from 'react-router-dom';
 
 /** model */
 import { Agenda } from '../../../store/agenda/set/types';
@@ -17,11 +15,9 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Avatar from '@material-ui/core/Avatar';
-//import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
-//import FavoriteIcon from '@material-ui/icons/Favorite';
-//import ShareIcon from '@material-ui/icons/Share';
+import { FacebookShareButton, FacebookIcon, TwitterShareButton, TwitterIcon } from 'react-share';
 
 const useStyles = makeStyles((theme: Theme) => ({
     card: {
@@ -54,17 +50,9 @@ interface AgendaDetailThemeProps {
 const AgendaDetailTheme: FC<AgendaDetailThemeProps> = ({ agendaDetail }) => {
     const classes = useStyles();
 
+    const location = useLocation();
+
     if (agendaDetail.id === '') { return null; }
-
-    // report menu Event
-    /*const reportMenuHandleEvent = () => {
-        console.log('report');
-    };*/
-
-    // report menu setting ary
-    /*const reportMenuAry = [
-        { key: '1', value: 'report', handleEvents: reportMenuHandleEvent }
-    ];*/
 
     // render avatar
     const renderAvatar = () => {
@@ -91,15 +79,15 @@ const AgendaDetailTheme: FC<AgendaDetailThemeProps> = ({ agendaDetail }) => {
                     </Typography>
                 </CardContent>
                 <CardActions disableSpacing>
-                    {/*<IconButton aria-label="add to favorites" disabled disableFocusRipple disableRipple>
-                        <FavoriteIcon />
-                    </IconButton>
-                    <IconButton aria-label="share" disabled disableFocusRipple disableRipple>
-                        <ShareIcon />
-    </IconButton>*/}
+                    <FacebookShareButton title={agendaDetail.subject} url={`https://confrence-1568633251505.firebaseapp.com${location.pathname}`}>
+                        <FacebookIcon size={35} round />
+                    </FacebookShareButton>
+                    <TwitterShareButton url={`https://confrence-1568633251505.firebaseapp.com${location.pathname}`}>
+                        <TwitterIcon size={35} round />
+                    </TwitterShareButton>
                 </CardActions>
             </Card>
-        </div>
+        </div >
     );
 
 };
