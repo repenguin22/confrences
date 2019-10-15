@@ -2,6 +2,7 @@
 import React, { FC, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
+import ReactGA from 'react-ga';
 
 /** Custom Components */
 import Header from '../../header/Header';
@@ -128,6 +129,11 @@ const AgendaCreate: FC = () => {
             }, 2500);
         }
     }, [resulted]);
+
+    useEffect(() => {
+        document.title = 'お題作成';
+        ReactGA.pageview(window.location.pathname + window.location.search);
+    }, []);
 
     if (typeof putAgendaCretae !== 'function' || typeof loading !== 'boolean' || typeof resulted !== 'object') {
         return null;
@@ -364,12 +370,12 @@ const AgendaCreate: FC = () => {
                         {renderChoice()}
                     </CardContent>
                 </Card>
+                {renderSubmitProgressBar()}
                 <Box mx="auto" mt={2} className={classes.box}>
                     <Button onClick={submitButtonClick} variant="contained" color="primary" disabled={loading}>
                         投稿
                     </Button>
                 </Box>
-                {renderSubmitProgressBar()}
                 {renderCustomSnackBar()}
             </Container >
         </React.Fragment >

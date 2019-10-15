@@ -2,6 +2,7 @@
 import React, { FC, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
+import ReactGA from 'react-ga';
 
 /** Custom Components */
 import Header from '../../header/Header';
@@ -110,6 +111,16 @@ const AgendaDetail: FC = () => {
             getAgendaDetail(agendaId);
         }
     }, [reloadCount]);
+
+    useEffect(() => {
+        if (typeof agendaDetail !== 'object' || typeof getAgendaLoading !== 'boolean' || typeof getAgendaError !== 'string') {
+            return;
+        }
+        if (!getAgendaLoading && getAgendaError === '' && agendaDetail.subject !== '') {
+            document.title = agendaDetail.subject;
+            ReactGA.pageview(window.location.pathname + window.location.search);
+        }
+    }, [getAgendaLoading]);
 
     useEffect(() => {
         if (typeof createVoteResulted !== 'object') {
@@ -281,11 +292,11 @@ const AgendaDetail: FC = () => {
                     </FormControl>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={voteDialogClose} color="primary">
-                        Cancel
+                    <Button onClick={voteDialogClose} color="primary" disabled={createVoteLoading}>
+                        キャンセル
                     </Button>
-                    <Button onClick={submitButtonClick} color="primary">
-                        Subscribe
+                    <Button onClick={submitButtonClick} color="primary" disabled={createVoteLoading}>
+                        投票
                     </Button>
                 </DialogActions>
                 {renderSubmitProgressBar()}

@@ -1,6 +1,7 @@
 /** library */
 import React, { FC } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import ReactGA from 'react-ga';
 
 /** firebase */
 import * as firebase from 'firebase/app';
@@ -16,6 +17,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 
 const App: FC = () => {
     firebase.initializeApp(firebaseConfig);
+    ReactGA.initialize('UA-150033688-1');
     return (
         <div>
             <CssBaseline />

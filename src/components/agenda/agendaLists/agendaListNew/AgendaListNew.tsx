@@ -2,6 +2,7 @@
 import React, { FC, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import Pagination from 'material-ui-flat-pagination';
+import ReactGA from 'react-ga';
 
 /** Custom Components */
 import Header from '../../../header/Header';
@@ -51,6 +52,8 @@ const AgendaListNew: FC = () => {
         if (typeof getAgendaListNew == 'function') {
             getAgendaListNew();
         }
+        document.title = '新着リスト';
+        ReactGA.pageview(window.location.pathname + window.location.search);
     }, []);
 
     if (!Array.isArray(agendaList) || typeof loading !== 'boolean' || typeof error !== 'string') {
