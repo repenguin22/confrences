@@ -44,6 +44,9 @@ export const useAgendaGet = () => {
             const agendaDetail: Agenda = {
                 id: '',
                 subject: '',
+                Postscript1: '',
+                Postscript2: '',
+                Postscript3: '',
                 overview: '',
                 choice1: '',
                 choice1Count: 0,
@@ -59,10 +62,14 @@ export const useAgendaGet = () => {
                 createUserName: '',
                 createUserPhotoURL: '',
                 createdAt: new Date(),
+                updateAt: new Date(),
                 delFlg: false
             };
             agendaDetail.id = agenda.id;
             agendaDetail.subject = agenda.subject;
+            agendaDetail.Postscript1 = agenda.Postscript1;
+            agendaDetail.Postscript2 = agenda.Postscript2;
+            agendaDetail.Postscript3 = agenda.Postscript3;
             agendaDetail.overview = agenda.overview;
             agendaDetail.choice1 = agenda.choice1;
             agendaDetail.choice2 = agenda.choice2;
@@ -71,6 +78,7 @@ export const useAgendaGet = () => {
             agendaDetail.closeDate = agenda.closeDate;
             agendaDetail.favoriteCount = agenda.favoriteCount;
             agendaDetail.createdAt = agenda.createdAt.seconds;
+            agendaDetail.updateAt = agenda.updateAt.seconds;
             agendaDetail.delFlg = agenda.delFlg;
             const createUserId = agenda.createUserId;
 

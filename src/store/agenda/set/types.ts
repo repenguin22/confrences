@@ -6,6 +6,9 @@ export const SET_RELOAD = 'SET_RELOAD';
 export interface Agenda {
     id: string;
     subject: string;
+    Postscript1: string;
+    Postscript2: string;
+    Postscript3: string;
     overview: string;
     choice1: string;
     choice1Count: number;
@@ -21,6 +24,7 @@ export interface Agenda {
     createUserName: string;
     createUserPhotoURL: string;
     createdAt: Date;
+    updateAt: Date;
     delFlg: boolean;
 }
 
@@ -33,6 +37,7 @@ export interface Vote {
     createUserName: string;
     createUserPhotoURL: string;
     createdAt: Date;
+    updateAt: Date;
     delFlg: boolean
 }
 

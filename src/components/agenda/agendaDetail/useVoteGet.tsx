@@ -40,6 +40,7 @@ export const useVoteGet = () => {
                         createUserName: doc.data().createUserName,
                         createUserPhotoURL: doc.data().createUserPhotoURL,
                         createdAt: doc.data().createdAt.seconds,
+                        updateAt: doc.data().updateAt.seconds,
                         delFlg: doc.data().delFlg
                     };
                     resVoteList.push(tmpVoteObj);

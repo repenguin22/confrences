@@ -5,6 +5,9 @@ const initialState: AgendaState = {
     agendaDetail: {
         id: '',
         subject: '',
+        Postscript1: '',
+        Postscript2: '',
+        Postscript3: '',
         overview: '',
         choice1: '',
         choice1Count: 0,
@@ -20,6 +23,7 @@ const initialState: AgendaState = {
         createUserName: '',
         createUserPhotoURL: '',
         createdAt: new Date(),
+        updateAt: new Date(),
         delFlg: false
     },
     voteList: [],

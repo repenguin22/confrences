@@ -26,6 +26,9 @@ export const useAgendaListNew = () => {
                     const tmpAgenda: Agenda = {
                         id: doc.data().id,
                         subject: doc.data().subject,
+                        Postscript1: '',
+                        Postscript2: '',
+                        Postscript3: '',
                         overview: '',
                         choice1: '',
                         choice1Count: 0,
@@ -41,6 +44,7 @@ export const useAgendaListNew = () => {
                         createUserName: '',
                         createUserPhotoURL: '',
                         createdAt: new Date(),
+                        updateAt: new Date(),
                         delFlg: false
                     };
                     agendaNewList.push(tmpAgenda);

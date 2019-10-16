@@ -38,6 +38,9 @@ exports.createAgenda = functions.https.onCall(async (data: any, context: any) =>
         batch.set(agendaRef, {
             id: generateId,
             subject: data.subject.replace(/\r?\n/g, '\n'),
+            Postscript1: '',
+            Postscript2: '',
+            Postscript3: '',
             overview: data.overview.replace(/\r?\n/g, '\n'),
             choice1: data.choice1,
             choice2: data.choice2,
@@ -49,6 +52,7 @@ exports.createAgenda = functions.https.onCall(async (data: any, context: any) =>
             createUserName: data.displayName,
             createUserPhotoURL: data.photoURL,
             createdAt: admin.firestore.Timestamp.now().toDate(),
+            updateAt: admin.firestore.Timestamp.now().toDate(),
             delFlg: false
         });
         let countShardsBaseRef = admin.firestore().collection('agenda').doc(generateId);
@@ -98,6 +102,7 @@ exports.createVote = functions.https.onCall(async (data, context) => {
             createUserName: data.displayName,
             createUserPhotoURL: data.photoURL,
             createdAt: admin.firestore.Timestamp.now().toDate(),
+            updateAt: admin.firestore.Timestamp.now().toDate(),
             delFlg: false
         });
 
