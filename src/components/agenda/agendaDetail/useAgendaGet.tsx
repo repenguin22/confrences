@@ -56,7 +56,8 @@ export const useAgendaGet = () => {
                 choice3Count: 0,
                 choice4: '',
                 choice4Count: 0,
-                closeDate: '',
+                openDate: new Date(),
+                closeDate: new Date(),
                 favoriteCount: 0,
                 createUserId: '',
                 createUserName: '',
@@ -75,6 +76,7 @@ export const useAgendaGet = () => {
             agendaDetail.choice2 = agenda.choice2;
             agendaDetail.choice3 = agenda.choice3;
             agendaDetail.choice4 = agenda.choice4;
+            agendaDetail.openDate = agenda.openDate;
             agendaDetail.closeDate = agenda.closeDate;
             agendaDetail.favoriteCount = agenda.favoriteCount;
             agendaDetail.createdAt = agenda.createdAt.seconds;

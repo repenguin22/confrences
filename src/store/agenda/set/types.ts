@@ -18,7 +18,8 @@ export interface Agenda {
     choice3Count: number;
     choice4: string;
     choice4Count: number;
-    closeDate: string;
+    openDate: Date;
+    closeDate: Date;
     favoriteCount: number;
     createUserId: string;
     createUserName: string;

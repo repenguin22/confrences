@@ -17,7 +17,7 @@ import CardActions from '@material-ui/core/CardActions';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
-import { FacebookShareButton, FacebookIcon, TwitterShareButton, TwitterIcon } from 'react-share';
+import { TwitterShareButton, TwitterIcon } from 'react-share';
 
 const useStyles = makeStyles((theme: Theme) => ({
     card: {
