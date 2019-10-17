@@ -9,6 +9,7 @@ import { firebaseConfig } from '../firebase';
 
 /** Custom Components */
 import AgendaListNew from './agenda/agendaLists/agendaListNew/AgendaListNew';
+import AgendaListSearch from './agenda/agendaLists/agendaListSearch/AgendaListSearch';
 import AgendaCreate from './agenda/agendaCreate/AgendaCreate';
 import AgendaDetail from './agenda/agendaDetail/AgendaDetail';
 
@@ -17,13 +18,14 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 
 const App: FC = () => {
     firebase.initializeApp(firebaseConfig);
-    ReactGA.initialize('UA-150033688-1');
+    ReactGA.initialize('UA-150033688-2');
     return (
         <div>
             <CssBaseline />
             <Router>
                 <Switch>
                     <Route path="/" component={AgendaListNew} exact />
+                    <Route path="/search" component={AgendaListSearch} exact />
                     <Route path="/agenda/create" component={AgendaCreate} exact />
                     <Route path="/agenda/:id" component={AgendaDetail} exact />
                 </Switch>

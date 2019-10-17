@@ -10,7 +10,7 @@ interface paramObjIF {
  */
 class validation {
     /** Required method to check */
-    requiredCheck(paramObj: paramObjIF) {
+    requiredCheck(paramObj: paramObjIF): paramObjIF {
         // Remove line break
         let val = paramObj.value.replace(/\r?\n/g, '');
         if (val === '') {
@@ -21,7 +21,7 @@ class validation {
     }
 
     /** Method to check whether the maximum number of characters is exceeded */
-    validMaxLength(maxChar: number, paramObj: paramObjIF) {
+    validMaxLength(maxChar: number, paramObj: paramObjIF): paramObjIF {
         let val = paramObj.value;
         if (val.length > maxChar) {
             paramObj.error = true;
@@ -32,7 +32,7 @@ class validation {
     }
 
     /** Method to check whether the maximum number of line breaks has been exceeded */
-    validNewLine(maxNewLine: number, paramObj: paramObjIF) {
+    validNewLine(maxNewLine: number, paramObj: paramObjIF): paramObjIF {
         const val = paramObj.value;
         // Count line breaks
         let count = (val.match(/\r?\n/g) || []).length;
@@ -53,7 +53,7 @@ class validation {
         return paramObj;
     }
     /** A function that checks whether the same value exists */
-    validSameValue(paramObj: paramObjIF, values: any, msg: string) {
+    validSameValue(paramObj: paramObjIF, values: any, msg: string): paramObjIF {
         const val = paramObj.value;
         let count = 0;
         values.forEach((v: string) => {

@@ -117,7 +117,7 @@ const AgendaDetail: FC = () => {
             return;
         }
         if (!getAgendaLoading && getAgendaError === '' && agendaDetail.subject !== '') {
-            document.title = agendaDetail.subject;
+            document.title = agendaDetail.subject + ' - Votter';
             ReactGA.pageview(window.location.pathname + window.location.search);
         }
     }, [getAgendaLoading]);

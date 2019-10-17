@@ -131,7 +131,7 @@ const AgendaCreate: FC = () => {
     }, [resulted]);
 
     useEffect(() => {
-        document.title = 'お題作成';
+        document.title = 'お題作成 - Votter';
         ReactGA.pageview(window.location.pathname + window.location.search);
     }, []);
 
