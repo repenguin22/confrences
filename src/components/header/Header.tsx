@@ -142,7 +142,7 @@ const Header: FC = () => {
                     <MyDrawer />
                     <Link to={'/'} className="iconLink">
                         <Typography className={classes.title} variant="h6" noWrap>
-                            Confrences
+                            Votter
                         </Typography>
                     </Link>
                     <div className={classes.grow} />
