@@ -92,11 +92,19 @@ exports.createAgenda = functions.https.onCall(async (data: any, context: any) =>
         let agendaRef = admin.firestore().collection('agenda').doc(generateId);
 
         agenda.id = generateId;
-        agenda.subject = data.subject.replace(/\r?\n/g, '\n');
+        // valid newline
+        let subject = data.subject.replace(/\r?\n/g, '\n');
+        // valid url
+        subject = subject.replace('http', '');
+        agenda.subject = subject;
         agenda.Postscript1 = '';
         agenda.Postscript2 = '';
         agenda.Postscript3 = '';
-        agenda.overview = data.overview.replace(/\r?\n/g, '\n');
+        // valid newline
+        let overview = data.overview.replace(/\r?\n/g, '\n');
+        // valid url
+        overview = overview.replace('http', '');
+        agenda.overview = overview;
         agenda.choice1 = data.choice1;
         agenda.choice2 = data.choice2;
         agenda.choice3 = data.choice3;
@@ -162,7 +170,35 @@ exports.createAgenda = functions.https.onCall(async (data: any, context: any) =>
     }
 });
 
+interface Vote {
+    id: string;
+    choice: string;
+    reason: string;
+    goodCount: number;
+    createUserId: string;
+    createUserName: string;
+    createUserPhotoURL: string;
+    createdAt: Date;
+    updateAt: Date;
+    delFlg: boolean
+}
+
 exports.createVote = functions.https.onCall(async (data, context) => {
+    const agendaId = data.agendaId;
+    let generateId = getRandomId(agendaId);
+
+    const vote: Vote = {
+        id: '',
+        choice: '',
+        reason: '',
+        goodCount: 0,
+        createUserId: '',
+        createUserName: '',
+        createUserPhotoURL: '',
+        createdAt: new Date(),
+        updateAt: new Date(),
+        delFlg: false
+    };
     try {
         // 認証済みユーザーかどうかチェックする
         if (!context.auth || !context.auth.uid) {
@@ -171,23 +207,21 @@ exports.createVote = functions.https.onCall(async (data, context) => {
         // 一括書き込みを実施する
         console.info(data);
         let batch = admin.firestore().batch();
-        const agendaId = data.agendaId;
-        let generateId = getRandomId(agendaId);
         let voteRef = admin.firestore().collection('agenda').doc(agendaId).collection('vote').doc(generateId);
+        vote.id = generateId;
+        vote.choice = data.choice;
+        let resaon = data.reason.replace(/\r?\n/g, '\n');
+        resaon = resaon.replace('http', '');
+        vote.reason = resaon;
+        vote.goodCount = 0;
+        vote.createUserId = context.auth.uid;
+        vote.createUserName = data.displayName;
+        vote.createUserPhotoURL = data.photoURL;
+        vote.createdAt = admin.firestore.Timestamp.now().toDate();
+        vote.updateAt = admin.firestore.Timestamp.now().toDate();
+        vote.delFlg = false;
         // add Data
-        batch.set(voteRef, {
-            id: generateId,
-            choice: data.choice,
-            reason: data.reason.replace(/\r?\n/g, '\n'),
-            goodCount: 0,
-            createUserId: context.auth.uid,
-            createUserName: data.displayName,
-            createUserPhotoURL: data.photoURL,
-            createdAt: admin.firestore.Timestamp.now().toDate(),
-            updateAt: admin.firestore.Timestamp.now().toDate(),
-            delFlg: false
-        });
-
+        batch.set(voteRef, vote);
         const MAXSHAREDID = 10;
         let countShardsRef = admin.firestore().collection('agenda').doc(agendaId).collection('countShards').doc(getSharedId(MAXSHAREDID).toString());
         const selectedChoiceIndex = data.selectedChoiceIndex;
@@ -195,15 +229,40 @@ exports.createVote = functions.https.onCall(async (data, context) => {
             [selectedChoiceIndex]: admin.firestore.FieldValue.increment(1)
         });
         await batch.commit();
-        return {
-            code: '200',
-            value: generateId
-        };
     } catch (error) {
         console.error(error);
         return {
             code: '500',
             value: 'internal server error'
+        };
+    }
+    try {
+        // bigquery insert 
+        // Create a client
+        if (vote.id === '') {
+            throw new Error('firestore stored fail exception');
+        }
+        const bigqueryClient = new BigQuery();
+        await bigqueryClient.dataset('search').table('vote').insert(vote);
+        console.log('Inserted');
+        return {
+            code: '200',
+            value: generateId
+        };
+    } catch (err) {
+        if (err.name === 'PartialFailureError') {
+            //err.errors[].row(original row object passed to `insert`)
+            err.errors.forEach((air: any) => {
+                air.errors.forEach((air2: any) => {
+                    console.error(air2.reason);
+                    console.error(air2.message);
+                });
+            });
+        }
+        console.error(err);
+        return {
+            code: '200',
+            value: generateId
         };
     }
 });

@@ -12,6 +12,8 @@ import MyDrawer from './MyDrawer';
 import GoogleAuth from '../Auth/GoogleAuth';
 import Notification from './Notification';
 import AccountIcon from './AccountIcon';
+import IconButton from '@material-ui/core/IconButton';
+import SearchIcon from '@material-ui/icons/Search';
 
 /** action */
 import { signOut } from '../../store/auth/action';
@@ -146,6 +148,11 @@ const Header: FC = () => {
                         </Typography>
                     </Link>
                     <div className={classes.grow} />
+                    <Link to={'/search'} className="iconLink">
+                        <IconButton aria-label="search" color="inherit">
+                            <SearchIcon />
+                        </IconButton>
+                    </Link>
                     <Notification />
                     <AccountIcon handleProfileMenuOpen={handleProfileMenuOpen} />
                     <GoogleAuth />
