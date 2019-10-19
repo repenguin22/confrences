@@ -16,6 +16,7 @@ import IconButton from '@material-ui/core/IconButton';
 import NewReleasesIcon from '@material-ui/icons/NewReleases';
 import WbSunnyIcon from '@material-ui/icons/WbSunny';
 import HomeIcon from '@material-ui/icons/Home';
+import InfoIcon from '@material-ui/icons/Info';
 
 /** css */
 import './MyDrawer.css';
@@ -72,9 +73,16 @@ const MyDrawer: FC = () => {
                 </Link>
                 <Divider />
                 <Link to="/agenda/create" className="drawerLink">
-                    <ListItem button key="お題作成">
+                    <ListItem button key="createAgenda">
                         <ListItemIcon><CreateIcon /></ListItemIcon>
                         <ListItemText primary="お題作成" />
+                    </ListItem>
+                </Link>
+                <Divider />
+                <Link to="/aboutus" className="drawerLink">
+                    <ListItem button key="aboutus">
+                        <ListItemIcon><InfoIcon /></ListItemIcon>
+                        <ListItemText primary="Votterについて" />
                     </ListItem>
                 </Link>
             </List>
