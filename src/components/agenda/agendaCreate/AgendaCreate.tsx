@@ -303,7 +303,7 @@ const AgendaCreate: FC = () => {
     };
 
     const renderCustomSnackBar = () => {
-        if (notice.target === location.pathname) {
+        if (notice.target === location.pathname || notice.target === 'all') {
             return <CustomSnackBar />;
         }
         return null;

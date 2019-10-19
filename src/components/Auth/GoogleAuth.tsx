@@ -1,6 +1,6 @@
 /** library */
 import React, { FC } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 /** firebase lib */
 import * as firebase from 'firebase/app';
@@ -12,6 +12,8 @@ import { CustomSnackBar } from '../common/CustomSnackBar';
 /** action */
 import { Auth, AuthState } from '../../store/auth/types';
 import { NoticeState } from '../../store/notice/types';
+import { setNotice } from '../../store/notice/action';
+import { SnackBarTypeVariation } from '../../store/notice/types';
 
 /** useAgendaCreate */
 import { useGoogleAuth } from './useGoogleAuth';
@@ -32,6 +34,8 @@ const useStyles = makeStyles(theme => ({
 const GoogleAuth: FC = () => {
 
     const classes = useStyles();
+
+    const dispatch = useDispatch();
 
     const loginedUserId: string | null = useSelector((state: AuthState) => state.auth.uid);
 
@@ -59,8 +63,15 @@ const GoogleAuth: FC = () => {
         } catch (error) {
             let errorCode = error.code;
             let errorMessage = error.message;
-            console.log(errorCode);
-            console.log(errorMessage);
+            dispatch(setNotice({
+                target: 'all',
+                count: 1,
+                type: SnackBarTypeVariation.error,
+                message: `ログインに失敗しました エラーコード： ${errorCode} エラー内容： ${errorMessage}`,
+                vertical: 'top',
+                horizontal: 'center',
+                displayTime: 2000
+            }));
         }
     };
 

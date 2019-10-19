@@ -72,9 +72,9 @@ const MyDrawer: FC = () => {
                 </Link>
                 <Divider />
                 <Link to="/agenda/create" className="drawerLink">
-                    <ListItem button key="CreateAgenda">
+                    <ListItem button key="お題作成">
                         <ListItemIcon><CreateIcon /></ListItemIcon>
-                        <ListItemText primary="CreateAgenda" />
+                        <ListItemText primary="お題作成" />
                     </ListItem>
                 </Link>
             </List>

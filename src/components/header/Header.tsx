@@ -17,6 +17,8 @@ import AccountIcon from './AccountIcon';
 import { signOut } from '../../store/auth/action';
 import { Auth } from '../../store/auth/types';
 import { useGoogleAuth } from '../Auth/useGoogleAuth';
+import { setNotice } from '../../store/notice/action';
+import { SnackBarTypeVariation } from '../../store/notice/types';
 
 /** Material UI Components */
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -116,7 +118,15 @@ const Header: FC = () => {
         firebase.auth().signOut().then(() => {
             dispatch(signOut());
         }).catch(error => {
-            console.log(`ログアウト時にエラーが発生しました (${error})`);
+            dispatch(setNotice({
+                target: 'all',
+                count: 1,
+                type: SnackBarTypeVariation.error,
+                message: `ログアウトに失敗しました エラー： ${error}`,
+                vertical: 'top',
+                horizontal: 'center',
+                displayTime: 2000
+            }));
         });
     };
 
