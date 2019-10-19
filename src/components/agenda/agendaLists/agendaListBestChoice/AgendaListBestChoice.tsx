@@ -21,6 +21,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import Avatar from '@material-ui/core/Avatar';
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -87,6 +89,12 @@ const AgendaListNew: FC = () => {
                         onClick={(event: React.MouseEvent<HTMLDivElement>) => handleListItemClick(event, agenda.id)}
                         key={agenda.id}
                     >
+                        <ListItemAvatar>
+                            <Avatar
+                                alt={'Avatar'}
+                                src={agenda.createUserPhotoURL}
+                            />
+                        </ListItemAvatar>
                         <ListItemText primary={agenda.subject} />
                     </ListItem>
                 );

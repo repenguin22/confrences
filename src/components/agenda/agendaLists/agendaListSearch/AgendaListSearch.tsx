@@ -64,15 +64,17 @@ const AgendaListNew: FC = () => {
     const [agendaList, getAgendaListSearch, loading, error] = useAgendaListSearch();
 
     useEffect(() => {
-        dispatch(setAgendaList([]));
         if (!Array.isArray(agendaList) || typeof loading !== 'boolean' || typeof error !== 'string') {
+            return;
+        }
+        if (searchWord === null || searchWord === '') {
+            dispatch(setAgendaList([]));
             return;
         }
         if (!loading && error === '' && searchWord !== null && searchWord !== '') {
             document.title = `${searchWord} - Votter検索`;
             ReactGA.pageview(window.location.pathname + window.location.search);
         }
-
     }, [loading, error]);
 
     if (!Array.isArray(agendaList) || typeof loading !== 'boolean' || typeof error !== 'string') {

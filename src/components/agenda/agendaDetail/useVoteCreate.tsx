@@ -51,7 +51,7 @@ export const useVoteCreate = () => {
             return;
         }
         try {
-            /*const querySnapshot = await firebase.firestore().collection('agenda').doc(agendaId).collection('vote').where('createUserId', '==', currentUser.uid).get();
+            const querySnapshot = await firebase.firestore().collection('agenda').doc(agendaId).collection('vote').where('createUserId', '==', currentUser.uid).get();
             if (!querySnapshot.empty) {
                 setLoading(false);
                 setResulted({ code: ResultedCodeVariation.error, msg: '投票は一度きりです', value: '' });
@@ -61,10 +61,11 @@ export const useVoteCreate = () => {
                     type: SnackBarTypeVariation.error,
                     message: '投票は一度きりです',
                     vertical: 'top',
-                    horizontal: 'center'
+                    horizontal: 'center',
+                    displayTime: 2500
                 }));
                 return;
-            }*/
+            }
             const choiceIndex = ['choice1Count', 'choice2Count', 'choice3Count', 'choice4Count'];
             let createVote = firebase.functions().httpsCallable('createVote');
             const result = await createVote({

@@ -45,7 +45,7 @@ export const useAgendaListBestChoice = () => {
                         favoriteCount: 0,
                         createUserId: '',
                         createUserName: '',
-                        createUserPhotoURL: '',
+                        createUserPhotoURL: doc.data().createUserPhotoURL,
                         createdAt: new Date(),
                         updateAt: new Date(),
                         delFlg: false

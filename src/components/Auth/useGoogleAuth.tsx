@@ -51,8 +51,8 @@ export const useGoogleAuth = () => {
             dispatch(setNotice({
                 target: 'all',
                 count: notice.count + 1,
-                type: SnackBarTypeVariation.success,
-                message: 'ログインに失敗しました',
+                type: SnackBarTypeVariation.error,
+                message: `ログインに失敗しました code:${error.code}`,
                 vertical: 'top',
                 horizontal: 'center',
                 displayTime: 3000

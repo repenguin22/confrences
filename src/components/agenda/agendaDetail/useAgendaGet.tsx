@@ -13,6 +13,7 @@ import { setNotice } from '../../../store/notice/action';
 
 export enum ResultedCodeVariation {
     not_found = '404',
+    gone = '410',
     internal_server_error = '500'
 }
 
@@ -82,6 +83,7 @@ export const useAgendaGet = () => {
             agendaDetail.createdAt = agenda.createdAt.seconds;
             agendaDetail.updateAt = agenda.updateAt.seconds;
             agendaDetail.delFlg = agenda.delFlg;
+
             const createUserId = agenda.createUserId;
 
             // Get creation user data
@@ -109,6 +111,10 @@ export const useAgendaGet = () => {
                 agendaDetail.choice3Count += doc.data().choice3Count;
                 agendaDetail.choice4Count += doc.data().choice4Count;
             });
+
+            if (agendaDetail.delFlg) {
+                throw new Error(ResultedCodeVariation.gone);
+            }
             dispatch(setAgendaDetail(agendaDetail));
             setLoading(false);
         } catch (error) {
@@ -119,6 +125,17 @@ export const useAgendaGet = () => {
                     count: notice.count + 1,
                     type: SnackBarTypeVariation.error,
                     message: 'データが存在しません',
+                    vertical: 'top',
+                    horizontal: 'center',
+                    displayTime: 2500
+                }));
+            } else if (error.message === ResultedCodeVariation.gone) {
+                setError('データが削除されました');
+                dispatch(setNotice({
+                    target: `/agenda/${agendaId}`,
+                    count: notice.count + 1,
+                    type: SnackBarTypeVariation.error,
+                    message: 'データが削除されました',
                     vertical: 'top',
                     horizontal: 'center',
                     displayTime: 2500

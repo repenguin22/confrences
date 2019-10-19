@@ -28,7 +28,7 @@ export const useVoteGet = () => {
             let resVoteList: Vote[] = [];
             let resVoteCreateUserRefAry: any = [];
             const voteRef = db.collection('agenda').doc(agendaId).collection('vote');
-            await voteRef.where('delFlg', '==', false).orderBy('createdAt', 'desc').limit(10000).get().then(querySnapshot => {
+            await voteRef.where('delFlg', '==', false).orderBy('createdAt', 'desc').get().then(querySnapshot => {
                 querySnapshot.forEach(doc => {
                     resVoteCreateUserRefAry.push(doc.data().createUser);
                     const tmpVoteObj: Vote = {
