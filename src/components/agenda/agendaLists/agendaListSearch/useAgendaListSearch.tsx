@@ -45,7 +45,6 @@ export const useAgendaListSearch = () => {
             dispatch(setAgendaList(result.data.value));
             setLoading(false);
         } catch (error) {
-            console.error(error);
             setError('エラーが発生しました');
             dispatch(setAgendaList([]));
             dispatch(setNotice({

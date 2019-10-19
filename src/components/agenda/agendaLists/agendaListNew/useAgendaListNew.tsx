@@ -56,7 +56,6 @@ export const useAgendaListNew = () => {
             dispatch(setAgendaList(agendaNewList));
             setLoading(false);
         } catch (error) {
-            console.error(error.message);
             dispatch(setNotice({
                 target: '/',
                 count: 1,

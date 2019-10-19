@@ -56,7 +56,6 @@ export const useAgendaListBestChoice = () => {
             dispatch(setAgendaList(agendaBestChoiceList));
             setLoading(false);
         } catch (error) {
-            console.error(error);
             dispatch(setNotice({
                 target: '/',
                 count: 1,
