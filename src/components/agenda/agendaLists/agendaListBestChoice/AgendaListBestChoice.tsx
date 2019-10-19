@@ -1,7 +1,7 @@
 /** library */
 import React, { FC, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import Pagination from 'material-ui-flat-pagination';
 import ReactGA from 'react-ga';
 
@@ -11,7 +11,7 @@ import { CustomSnackBar } from '../../../common/CustomSnackBar';
 import { NoticeState } from '../../../../store/notice/types';
 
 /** action */
-import { useAgendaListNew } from './useAgendaListNew';
+import { useAgendaListBestChoice } from './useAgendaListBestChoice';
 
 /** Material UI Components */
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -54,13 +54,13 @@ const AgendaListNew: FC = () => {
     const [offset, setOffset] = React.useState(0);
     const limit = 50;
 
-    const [agendaList, getAgendaListNew, loading, error] = useAgendaListNew();
+    const [agendaList, getAgendaListBestChoice, loading, error] = useAgendaListBestChoice();
 
     useEffect(() => {
-        if (typeof getAgendaListNew == 'function') {
-            getAgendaListNew();
+        if (typeof getAgendaListBestChoice == 'function') {
+            getAgendaListBestChoice();
         }
-        document.title = '新着リスト - Votter';
+        document.title = 'Votter';
         ReactGA.pageview(window.location.pathname + window.location.search);
     }, []);
 

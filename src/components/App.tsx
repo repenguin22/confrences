@@ -8,6 +8,7 @@ import * as firebase from 'firebase/app';
 import { firebaseConfig } from '../firebase';
 
 /** Custom Components */
+import AgendaListBestChoice from './agenda/agendaLists/agendaListBestChoice/AgendaListBestChoice';
 import AgendaListNew from './agenda/agendaLists/agendaListNew/AgendaListNew';
 import AgendaListSearch from './agenda/agendaLists/agendaListSearch/AgendaListSearch';
 import AgendaCreate from './agenda/agendaCreate/AgendaCreate';
@@ -24,7 +25,8 @@ const App: FC = () => {
             <CssBaseline />
             <Router>
                 <Switch>
-                    <Route path="/" component={AgendaListNew} exact />
+                    <Route path="/" component={AgendaListBestChoice} exact />
+                    <Route path="/new" component={AgendaListNew} exact />
                     <Route path="/search" component={AgendaListSearch} exact />
                     <Route path="/agenda/create" component={AgendaCreate} exact />
                     <Route path="/agenda/:id" component={AgendaDetail} exact />

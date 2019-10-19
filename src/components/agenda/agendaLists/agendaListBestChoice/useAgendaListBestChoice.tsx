@@ -12,18 +12,18 @@ import { setAgendaList } from '../../../../store/agenda/set/action';
 import { setNotice } from '../../../../store/notice/action';
 import { SnackBarTypeVariation } from '../../../../store/notice/types';
 
-export const useAgendaListNew = () => {
+export const useAgendaListBestChoice = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const agendaList = useSelector((state: AllAgendaState) => state.agenda.agendaList);
     const dispatch = useDispatch();
 
-    const getAgendaListNew = useCallback(async () => {
+    const getAgendaListBestChoice = useCallback(async () => {
         setLoading(true);
         try {
-            let agendaNewList: Agenda[] = [];
+            let agendaBestChoiceList: Agenda[] = [];
             let db = firebase.firestore();
-            await db.collection('agenda').where('delFlg', '==', false).orderBy('createdAt', 'desc').limit(10000).get().then(querySnapshot => {
+            await db.collection('agenda').where('createUserId', '==', 'y2URG2InymMX05xyDSXsHmvtGME3').where('delFlg', '==', false).orderBy('createdAt', 'desc').limit(10000).get().then(querySnapshot => {
                 querySnapshot.forEach(doc => {
                     const tmpAgenda: Agenda = {
                         id: doc.data().id,
@@ -50,13 +50,13 @@ export const useAgendaListNew = () => {
                         updateAt: new Date(),
                         delFlg: false
                     };
-                    agendaNewList.push(tmpAgenda);
+                    agendaBestChoiceList.push(tmpAgenda);
                 });
             });
-            dispatch(setAgendaList(agendaNewList));
+            dispatch(setAgendaList(agendaBestChoiceList));
             setLoading(false);
         } catch (error) {
-            console.error(error.message);
+            console.error(error);
             dispatch(setNotice({
                 target: '/',
                 count: 1,
@@ -71,5 +71,5 @@ export const useAgendaListNew = () => {
         }
     }, [agendaList, loading, error]);
 
-    return [agendaList, getAgendaListNew, loading, error];
+    return [agendaList, getAgendaListBestChoice, loading, error];
 };

@@ -42,7 +42,8 @@ export const useAgendaCreate = () => {
                 type: SnackBarTypeVariation.error,
                 message: 'サインインしてください',
                 vertical: 'bottom',
-                horizontal: 'center'
+                horizontal: 'center',
+                displayTime: 2500
             }));
             return;
         }
@@ -73,7 +74,8 @@ export const useAgendaCreate = () => {
                 type: SnackBarTypeVariation.error,
                 message: '同じ選択肢が含まれています',
                 vertical: 'bottom',
-                horizontal: 'center'
+                horizontal: 'center',
+                displayTime: 3000
             }));
             return;
         }
@@ -99,7 +101,8 @@ export const useAgendaCreate = () => {
                 type: SnackBarTypeVariation.success,
                 message: '投稿に成功しました',
                 vertical: 'bottom',
-                horizontal: 'center'
+                horizontal: 'center',
+                displayTime: 2000
             }));
         } catch (error) {
             setResulted({ code: ResultedCodeVariation.error, msg: '投稿に失敗しました。時間をおいて再実施してください', value: '' });
@@ -109,7 +112,8 @@ export const useAgendaCreate = () => {
                 type: SnackBarTypeVariation.error,
                 message: '投稿に失敗しました。時間をおいて再実施してください',
                 vertical: 'bottom',
-                horizontal: 'center'
+                horizontal: 'center',
+                displayTime: 2500
             }));
             setLoading(false);
         }

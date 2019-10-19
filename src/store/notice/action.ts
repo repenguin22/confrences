@@ -9,7 +9,8 @@ export const setNotice = (notice: Notice) => {
             type: notice.type,
             message: notice.message,
             vertical: notice.vertical,
-            horizontal: notice.horizontal
+            horizontal: notice.horizontal,
+            displayTime: notice.displayTime
         }
     };
 };

@@ -15,6 +15,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
 import NewReleasesIcon from '@material-ui/icons/NewReleases';
 import WbSunnyIcon from '@material-ui/icons/WbSunny';
+import HomeIcon from '@material-ui/icons/Home';
 
 /** css */
 import './MyDrawer.css';
@@ -58,6 +59,12 @@ const MyDrawer: FC = () => {
                     </ListItem>
                 </Link>
                 <Link to="/" className="drawerLink">
+                    <ListItem button key="HOME">
+                        <ListItemIcon><HomeIcon /></ListItemIcon>
+                        <ListItemText primary="HOME" />
+                    </ListItem>
+                </Link>
+                <Link to="/new" className="drawerLink">
                     <ListItem button key="New">
                         <ListItemIcon><NewReleasesIcon /></ListItemIcon>
                         <ListItemText primary="New" />

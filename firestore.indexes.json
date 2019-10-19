@@ -15,6 +15,24 @@
       ]
     },
     {
+      "collectionGroup": "agenda",
+      "queryScope": "COLLECTION_GROUP",
+      "fields": [
+        {
+          "fieldPath": "createUserId",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "delFlg",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
       "collectionGroup": "vote",
       "queryScope": "COLLECTION_GROUP",
       "fields": [

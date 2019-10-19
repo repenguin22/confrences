@@ -45,7 +45,8 @@ export const useVoteCreate = () => {
                 type: SnackBarTypeVariation.error,
                 message: 'サインインしてください',
                 vertical: 'top',
-                horizontal: 'center'
+                horizontal: 'center',
+                displayTime: 2500
             }));
             return;
         }
@@ -85,7 +86,8 @@ export const useVoteCreate = () => {
                 type: SnackBarTypeVariation.success,
                 message: '投票に成功しました',
                 vertical: 'top',
-                horizontal: 'center'
+                horizontal: 'center',
+                displayTime: 2000
             }));
             dispatch(setReload());
         } catch (error) {
@@ -97,7 +99,8 @@ export const useVoteCreate = () => {
                 type: SnackBarTypeVariation.error,
                 message: '投票に失敗しました。時間をおいて再実施してください',
                 vertical: 'top',
-                horizontal: 'center'
+                horizontal: 'center',
+                displayTime: 2500
             }));
         }
     }, [loading, resulted]);

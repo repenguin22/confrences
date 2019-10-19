@@ -6,7 +6,8 @@ export const initialState: Notice = {
     type: null,
     message: null,
     vertical: null,
-    horizontal: null
+    horizontal: null,
+    displayTime: 0
 };
 
 export const noticeReducer = (state = initialState, action: NoticeActionTypes): Notice => {
@@ -19,7 +20,8 @@ export const noticeReducer = (state = initialState, action: NoticeActionTypes): 
                 type: action.payload.type,
                 message: action.payload.message,
                 vertical: action.payload.vertical,
-                horizontal: action.payload.horizontal
+                horizontal: action.payload.horizontal,
+                displayTime: action.payload.displayTime
             };
         default:
             return state;

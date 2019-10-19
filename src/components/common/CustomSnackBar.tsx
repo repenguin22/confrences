@@ -163,7 +163,7 @@ export const CustomSnackBar = () => {
                         horizontal: 'center',
                     }}
                     open={true}
-                    autoHideDuration={3000}
+                    autoHideDuration={notice.displayTime}
                     onClose={handleClose}
                 >
                     {renderMySnackBar()}
@@ -177,7 +177,7 @@ export const CustomSnackBar = () => {
                         horizontal: 'center',
                     }}
                     open={true}
-                    autoHideDuration={3000}
+                    autoHideDuration={notice.displayTime}
                     onClose={handleClose}
                 >
                     {renderMySnackBar()}
@@ -191,7 +191,7 @@ export const CustomSnackBar = () => {
                         horizontal: 'right',
                     }}
                     open={true}
-                    autoHideDuration={3000}
+                    autoHideDuration={notice.displayTime}
                     onClose={handleClose}
                 >
                     {renderMySnackBar()}

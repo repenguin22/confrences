@@ -13,13 +13,13 @@ class convertFormat {
 
         return `${Y}/${m}/${d} ${H}:${i}`;
     }
-    convertURLParams(params: string, maxParamNum: number): Map<string, string>[] | null {
+    convertURLParams(params: string, maxParamNum: number): Map<string, string[]> | null {
         if (params[0] === '') {
             return null;
         }
         const localParams = params.slice(1);
         let currentIndex = 0;
-        let urlMaps = [];
+        let urlMaps = new Map<string, string[]>();
         for (let i = 0; i < maxParamNum; i++) {
             const equalIndex = localParams.indexOf('=', currentIndex);
             if (equalIndex === -1) {
@@ -29,26 +29,29 @@ class convertFormat {
             currentIndex = equalIndex;
 
             const andIndex = localParams.indexOf('&', currentIndex);
-            let value = '';
+            let values = '';
             if (andIndex === -1) {
-                value = localParams.slice(equalIndex + 1);
+                values = localParams.slice(equalIndex + 1);
                 currentIndex = params.length - 1;
             } else {
-                value = localParams.slice(equalIndex + 1, andIndex);
+                values = localParams.slice(equalIndex + 1, andIndex);
                 currentIndex = andIndex;
             }
-            if (name === '' || value === '') {
+            if (name === '' || values === '') {
                 return null;
             }
-            let urlMap = new Map<string, string>();
-            urlMap.set(name, name);
-            urlMap.set(value, value);
-            urlMaps.push(urlMap);
+            let valueList: string[] = [];
+            const halfSpaceValue = values.split(' ');
+            halfSpaceValue.forEach((hsVal: string) => {
+                hsVal.split('　').forEach(zsVal => {
+                    valueList.push(zsVal);
+                });
+            });
+            urlMaps.set(name, valueList);
             if (currentIndex === params.length - 1) {
                 break;
             }
         }
-        console.log(urlMaps);
         return urlMaps;
     }
 }

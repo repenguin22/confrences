@@ -7,6 +7,7 @@ export interface Notice {
     message: string | null,
     vertical: string | null,
     horizontal: string | null
+    displayTime: number
 }
 
 // for useSelector
@@ -18,6 +19,7 @@ export interface NoticeState {
         message: string | null,
         vertical: string | null,
         horizontal: string | null
+        displayTime: number
     }
 }
 

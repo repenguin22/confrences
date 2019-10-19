@@ -52,9 +52,10 @@ export const useGoogleAuth = () => {
                 target: 'all',
                 count: notice.count + 1,
                 type: SnackBarTypeVariation.success,
-                message: '投票に成功しました',
+                message: 'ログインに失敗しました',
                 vertical: 'top',
-                horizontal: 'center'
+                horizontal: 'center',
+                displayTime: 3000
             }));
         }
     }, [loading, resulted]);

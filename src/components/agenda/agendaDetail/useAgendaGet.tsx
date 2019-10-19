@@ -120,7 +120,8 @@ export const useAgendaGet = () => {
                     type: SnackBarTypeVariation.error,
                     message: 'データが存在しません',
                     vertical: 'top',
-                    horizontal: 'center'
+                    horizontal: 'center',
+                    displayTime: 2500
                 }));
             } else {
                 setError('データの取得に失敗しました');
@@ -130,7 +131,8 @@ export const useAgendaGet = () => {
                     type: SnackBarTypeVariation.error,
                     message: 'データの取得に失敗しました',
                     vertical: 'top',
-                    horizontal: 'center'
+                    horizontal: 'center',
+                    displayTime: 2500
                 }));
             }
             setLoading(false);

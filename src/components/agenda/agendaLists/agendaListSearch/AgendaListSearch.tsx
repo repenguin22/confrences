@@ -1,17 +1,18 @@
 /** library */
 import React, { FC, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { useHistory, useLocation } from 'react-router-dom';
 import Pagination from 'material-ui-flat-pagination';
 import ReactGA from 'react-ga';
 
 /** Custom Components */
 import Header from '../../../header/Header';
+import { CustomSnackBar } from '../../../common/CustomSnackBar';
+import { NoticeState } from '../../../../store/notice/types';
 
 /** action */
 import { useAgendaListSearch } from './useAgendaListSearch';
-
-/** util */
-import convertFormat from '../../../../utils/convertFormat';
+import { setAgendaList } from '../../../../store/agenda/set/action';
 
 /** Material UI Components */
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -23,6 +24,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Box from '@material-ui/core/Box';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -46,45 +48,48 @@ const AgendaListNew: FC = () => {
 
     const classes = useStyles();
 
+    const dispatch = useDispatch();
+
     const history = useHistory();
+
+    const location = useLocation();
+
+    const notice = useSelector((state: NoticeState) => state.notice);
 
     const [searchWord, setSearchWord] = React.useState('');
     const [selectedId, setselectedId] = React.useState('');
     const [offset, setOffset] = React.useState(0);
     const limit = 50;
 
-    const [agendaList, getAgendaListNew, loading, error] = useAgendaListSearch();
+    const [agendaList, getAgendaListSearch, loading, error] = useAgendaListSearch();
 
     useEffect(() => {
-        let searchWord = null;
-        if (window.location.search !== '') {
-            const cnvFmt = new convertFormat();
-            searchWord = cnvFmt.convertURLParams(window.location.search, 1);
-            if (searchWord === null) {
-                return;
-            }
-            if (typeof getAgendaListNew == 'function') {
-                //getAgendaListSearch(searchWord);
-            }
-            document.title = `${window.location.search.slice(1)} - Votter検索`;
-            ReactGA.pageview(window.location.pathname + window.location.search);
-        } else {
-            document.title = 'Top - Votter検索';
+        dispatch(setAgendaList([]));
+        if (!Array.isArray(agendaList) || typeof loading !== 'boolean' || typeof error !== 'string') {
+            return;
+        }
+        if (!loading && error === '' && searchWord !== null && searchWord !== '') {
+            document.title = `${searchWord} - Votter検索`;
             ReactGA.pageview(window.location.pathname + window.location.search);
         }
-    }, []);
+
+    }, [loading, error]);
 
     if (!Array.isArray(agendaList) || typeof loading !== 'boolean' || typeof error !== 'string') {
         return null;
     }
 
-    const searchWordChnageEvent = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        console.log(event.target.value);
-        setSearchWord(event.target.value);
-    };
+    const search = () => {
+        if (searchWord === null || searchWord === '') {
+            return;
+        }
+        if (typeof getAgendaListSearch == 'function') {
+            getAgendaListSearch(searchWord);
+        }
+    }
 
-    const searchButtonSubmit = () => {
-        history.push(`/search?q=${searchWord}`);
+    const searchWordChnageEvent = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setSearchWord(event.target.value);
     };
 
     const handleListItemClick = (event: React.MouseEvent<HTMLDivElement>, id: string) => {
@@ -116,33 +121,58 @@ const AgendaListNew: FC = () => {
 
     };
 
+    const renderSearchProgressBar = () => {
+        if (loading) {
+            return <LinearProgress />;
+        }
+        return null;
+    };
+
+    const renderCustomSnackBar = () => {
+        if (notice.target === location.pathname) {
+            return <CustomSnackBar />;
+        }
+        return null;
+    };
+
+    const renderPagination = () => {
+        if (agendaList.length === 0) {
+            return null;
+        }
+        return (
+            <Box mx="auto" mt={2} className={classes.box}>
+                <Pagination
+                    limit={limit}
+                    offset={offset}
+                    total={agendaList.length}
+                    onClick={(event, offset) => handleClick(offset)}
+                />
+            </Box>
+        );
+    };
+
     return (
         <React.Fragment>
             <Header />
             <Container maxWidth="xl">
+                {renderCustomSnackBar()}
                 <div className={classes.root}>
                     <Input
-                        defaultValue=""
+                        value={searchWord}
                         className={classes.input}
                         inputProps={{
                             'aria-label': 'search word',
                         }}
                         onChange={(event) => searchWordChnageEvent(event)}
                     />
-                    <IconButton color="primary" className={classes.button} aria-label="search" onClick={searchButtonSubmit}>
+                    <IconButton color="primary" className={classes.button} aria-label="search" onClick={search}>
                         <SearchIcon />
                     </IconButton>
                     <List component="nav" aria-label="agendaList">
+                        {renderSearchProgressBar()}
                         {ListItemById()}
                     </List>
-                    <Box mx="auto" mt={2} className={classes.box}>
-                        <Pagination
-                            limit={limit}
-                            offset={offset}
-                            total={agendaList.length}
-                            onClick={(event, offset) => handleClick(offset)}
-                        />
-                    </Box>
+                    {renderPagination()}
                 </div>
             </Container>
         </React.Fragment>
