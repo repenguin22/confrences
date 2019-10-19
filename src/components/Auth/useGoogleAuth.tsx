@@ -37,6 +37,7 @@ export const useGoogleAuth = () => {
                 throw new Error('googole auth fatal error');
             }
             let db = firebase.firestore();
+            console.log(auth.photoURL);
             await db.collection('user').doc(uid).set({
                 uid: uid,
                 displayName: auth.displayName,

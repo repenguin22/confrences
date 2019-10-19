@@ -1,5 +1,5 @@
 /** library */
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
@@ -15,6 +15,8 @@ import AccountIcon from './AccountIcon';
 
 /** action */
 import { signOut } from '../../store/auth/action';
+import { Auth } from '../../store/auth/types';
+import { useGoogleAuth } from '../Auth/useGoogleAuth';
 
 /** Material UI Components */
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -49,6 +51,27 @@ const Header: FC = () => {
     const dispatch = useDispatch();
 
     const classes = useStyles();
+
+    const [putAuth, loading, resulted] = useGoogleAuth();
+
+    useEffect(() => {
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                const auth: Auth = {
+                    uid: user.uid,
+                    displayName: user.displayName,
+                    photoURL: user.photoURL
+                };
+                if (typeof putAuth !== 'function') {
+                    return;
+                }
+                putAuth(auth);
+            }
+            else {
+                dispatch(signOut());
+            }
+        });
+    }, []);
 
     /**
      *  Profile Menu
