@@ -79,7 +79,7 @@ const AgendaDetailTheme: FC<AgendaDetailThemeProps> = ({ agendaDetail }) => {
                     </Typography>
                 </CardContent>
                 <CardActions disableSpacing>
-                    <TwitterShareButton url={`https://confrence-1568633251505.firebaseapp.com${location.pathname}`} title={agendaDetail.subject} hashtags={['confrences']}>
+                    <TwitterShareButton url={`https://votter.net${location.pathname}`} title={agendaDetail.subject} hashtags={['votter']}>
                         <TwitterIcon size={35} round />
                     </TwitterShareButton>
                 </CardActions>

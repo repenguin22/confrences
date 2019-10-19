@@ -28,6 +28,7 @@ const App: FC = () => {
                     <Route path="/search" component={AgendaListSearch} exact />
                     <Route path="/agenda/create" component={AgendaCreate} exact />
                     <Route path="/agenda/:id" component={AgendaDetail} exact />
+                    <Route exact component={AgendaListNew} />
                 </Switch>
             </Router>
         </div>
