@@ -1,5 +1,6 @@
 /** library */
 import React, { FC, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import ReactGA from 'react-ga';
 
 /** Custom Components */
@@ -40,6 +41,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 const AboutUs: FC = () => {
     const classes = useStyles();
 
+    const history = useHistory();
+
     useEffect(() => {
         document.title = '概要';
         ReactGA.pageview(window.location.pathname + window.location.search);
@@ -78,7 +81,7 @@ const AboutUs: FC = () => {
                         />
                         <CardContent>
                             <Box textAlign="center" m={1} fontSize={16}>
-                                問い合わせ内容があれば公式TwitterまたはGoogle Formよりお問い合わせください
+                                公式TwitterまたはGoogle Formよりお問い合わせください
                             </Box>
                             <Box textAlign="center" m={1} fontSize={16}>
                                 公式Twitter :
@@ -191,6 +194,18 @@ const AboutUs: FC = () => {
                                 開発者Twitter :
                                 <Link onClick={developerTwitterLinkOnClick} className={classes.link}>
                                     Re Penguin
+                                </Link>
+                            </Box>
+                        </CardContent>
+                    </Card>
+                    <Card className={classes.card}>
+                        <CardHeader
+                            title="プライバシーポリシー及びサービス利用規約"
+                        />
+                        <CardContent>
+                            <Box textAlign="center" m={1} fontSize={16}>
+                                <Link onClick={() => history.push('/privacypolicy')} className={classes.link}>
+                                    プライバシーポリシー及びサービス利用規約
                                 </Link>
                             </Box>
                         </CardContent>

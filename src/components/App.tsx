@@ -9,6 +9,7 @@ import { firebaseConfig } from '../firebase';
 
 /** Custom Components */
 import AboutUs from './aboutus/AboutUs';
+import PrivacyPolicy from './aboutus/PrivacyPolicy';
 import AgendaListBestChoice from './agenda/agendaLists/agendaListBestChoice/AgendaListBestChoice';
 import AgendaListNew from './agenda/agendaLists/agendaListNew/AgendaListNew';
 import AgendaListSearch from './agenda/agendaLists/agendaListSearch/AgendaListSearch';
@@ -32,6 +33,7 @@ const App: FC = () => {
                     <Route path="/agenda/create" component={AgendaCreate} exact />
                     <Route path="/agenda/:id" component={AgendaDetail} exact />
                     <Route path="/aboutus" exact component={AboutUs} />
+                    <Route path="/privacypolicy" exact component={PrivacyPolicy} />
                     <Route exact component={AgendaListNew} />
                 </Switch>
             </Router>
