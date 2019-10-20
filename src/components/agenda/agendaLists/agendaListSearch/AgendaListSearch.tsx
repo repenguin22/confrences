@@ -62,7 +62,7 @@ const AgendaListNew: FC = () => {
     const [searchWord, setSearchWord] = React.useState('');
     const [selectedId, setselectedId] = React.useState('');
     const [offset, setOffset] = React.useState(0);
-    const limit = 1;
+    const limit = 50;
 
     const [agendaList, getAgendaListSearch, loading, error] = useAgendaListSearch();
 
