@@ -7,7 +7,7 @@ import ReactGA from 'react-ga';
 import Header from '../header/Header';
 
 /** Material UI Components */
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Card from '@material-ui/core/Card';
 import Box from '@material-ui/core/Box';

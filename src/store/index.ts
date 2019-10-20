@@ -1,5 +1,5 @@
 import { createStore, combineReducers } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
+//import { composeWithDevTools } from 'redux-devtools-extension';
 
 import { authReducer } from './auth/reducers';
 import { noticeReducer } from './notice/reducers';
@@ -17,8 +17,8 @@ export type AppState = ReturnType<typeof rootReducer>;
 export const configureStore = () => {
 
     const store = createStore(
-        rootReducer,
-        composeWithDevTools()
+        rootReducer
+        //, composeWithDevTools()
     );
 
     return store;
