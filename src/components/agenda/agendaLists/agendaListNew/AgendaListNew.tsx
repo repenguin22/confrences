@@ -13,6 +13,9 @@ import { NoticeState } from '../../../../store/notice/types';
 /** action */
 import { useAgendaListNew } from './useAgendaListNew';
 
+/** util */
+import convertFormat from '../../../../utils/convertFormat';
+
 /** Material UI Components */
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
@@ -52,13 +55,24 @@ const AgendaListNew: FC = () => {
 
     const [selectedId, setselectedId] = React.useState('');
     const [offset, setOffset] = React.useState(0);
-    const limit = 50;
+    const limit = 1;
 
     const [agendaList, getAgendaListNew, loading, error] = useAgendaListNew();
 
     useEffect(() => {
-        if (typeof getAgendaListNew == 'function') {
+        const cnvFmt = new convertFormat();
+        const urlMap = cnvFmt.convertURLParams(window.location.search, 1);
+        let isPageNumCorrect = false;
+        if (urlMap && Array.isArray(agendaList)) {
+            isPageNumCorrect = cnvFmt.isPageParamsCorrect(urlMap, agendaList, limit);
+            if (isPageNumCorrect) {
+                const pageNum = cnvFmt.convertPageParseInt(urlMap);
+                setOffset(pageNum);
+            }
+        }
+        if (typeof getAgendaListNew == 'function' && !isPageNumCorrect) {
             getAgendaListNew();
+            history.push('/new');
         }
         document.title = '新着リスト - Votter';
         ReactGA.pageview(window.location.pathname + window.location.search);
@@ -75,6 +89,7 @@ const AgendaListNew: FC = () => {
 
     const handleClick = (offset: number) => {
         setOffset(offset);
+        history.push(`/new?page=${offset}`);
     };
 
     const ListItemById = () => {

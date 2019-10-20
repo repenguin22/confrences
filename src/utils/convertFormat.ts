@@ -1,3 +1,6 @@
+import { Agenda, Vote } from '../store/agenda/set/types';
+
+
 /**
  * object format convert General Class
  */
@@ -35,7 +38,7 @@ class convertFormat {
                 currentIndex = params.length - 1;
             } else {
                 values = localParams.slice(equalIndex + 1, andIndex);
-                currentIndex = andIndex;
+                currentIndex = andIndex + 1;
             }
             if (name === '' || values === '') {
                 return null;
@@ -53,6 +56,46 @@ class convertFormat {
             }
         }
         return urlMaps;
+    }
+    isPageParamsCorrect(urlMaps: Map<string, string[]>, list: Agenda[] | Vote[], limit: number): boolean {
+        const pageNum = this.convertPageParseInt(urlMaps);
+        if (pageNum === -1) {
+            return false;
+        }
+        if (list.length === 0) {
+            return false;
+        }
+        if (limit <= 0) {
+            return false;
+        }
+        if (pageNum < 0 || (list.length / limit) < pageNum) {
+            return false;
+        }
+        return true;
+    }
+    convertPageParseInt(urlMaps: Map<string, string[]>): number {
+        if (!urlMaps) {
+            return -1;
+        }
+        const pageObj = urlMaps.get('page');
+        if (!pageObj || pageObj[0] === '') {
+            return -1;
+        }
+        try {
+            return parseInt(pageObj[0]);
+        } catch (err) {
+            return -1;
+        }
+    }
+    convertSearchWord(urlMaps: Map<string, string[]>): string {
+        if (urlMaps === null) {
+            return '';
+        }
+        const qObj = urlMaps.get('q');
+        if (!qObj || qObj[0] === '') {
+            return '';
+        }
+        return qObj[0];
     }
 }
 

@@ -14,6 +14,9 @@ import { NoticeState } from '../../../../store/notice/types';
 import { useAgendaListSearch } from './useAgendaListSearch';
 import { setAgendaList } from '../../../../store/agenda/set/action';
 
+/** util */
+import convertFormat from '../../../../utils/convertFormat';
+
 /** Material UI Components */
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -59,15 +62,42 @@ const AgendaListNew: FC = () => {
     const [searchWord, setSearchWord] = React.useState('');
     const [selectedId, setselectedId] = React.useState('');
     const [offset, setOffset] = React.useState(0);
-    const limit = 50;
+    const limit = 1;
 
     const [agendaList, getAgendaListSearch, loading, error] = useAgendaListSearch();
+
+    useEffect(() => {
+        const cnvFmt = new convertFormat();
+        const urlMap = cnvFmt.convertURLParams(window.location.search, 2);
+        let q = '';
+        let isPageNumCorrect = false;
+        let pageNum = 0;
+        if (urlMap && Array.isArray(agendaList)) {
+            q = cnvFmt.convertSearchWord(urlMap);
+            setSearchWord(q);
+            isPageNumCorrect = cnvFmt.isPageParamsCorrect(urlMap, agendaList, limit);
+            if (isPageNumCorrect) {
+                pageNum = cnvFmt.convertPageParseInt(urlMap);
+                setOffset(pageNum);
+            }
+        }
+        if (!isPageNumCorrect) {
+            search(q, pageNum);
+        }
+    }, []);
 
     useEffect(() => {
         if (!Array.isArray(agendaList) || typeof loading !== 'boolean' || typeof error !== 'string') {
             return;
         }
-        if (searchWord === null || searchWord === '') {
+        const cnvFmt = new convertFormat();
+        const urlMap = cnvFmt.convertURLParams(window.location.search, 2);
+        if (!urlMap) {
+            dispatch(setAgendaList([]));
+            return;
+        }
+        let q = cnvFmt.convertSearchWord(urlMap);
+        if (q === null || q === '') {
             dispatch(setAgendaList([]));
             return;
         }
@@ -81,13 +111,18 @@ const AgendaListNew: FC = () => {
         return null;
     }
 
-    const search = () => {
-        if (searchWord === null || searchWord === '') {
+    const search = (q: string, pageNum: number) => {
+        if (q === null || q === '') {
             return;
         }
+        history.push(`/search?q=${q}&page=${pageNum}`);
         if (typeof getAgendaListSearch == 'function') {
-            getAgendaListSearch(searchWord);
+            getAgendaListSearch(q);
         }
+    }
+
+    const searchButtonSubmitHandle = () => {
+        search(searchWord, offset);
     }
 
     const searchWordChnageEvent = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -101,6 +136,7 @@ const AgendaListNew: FC = () => {
 
     const handleClick = (offset: number) => {
         setOffset(offset);
+        history.push(`/search?q=${searchWord}&page=${offset}`);
     };
 
     const ListItemById = () => {
@@ -167,7 +203,7 @@ const AgendaListNew: FC = () => {
                         }}
                         onChange={(event) => searchWordChnageEvent(event)}
                     />
-                    <IconButton color="primary" className={classes.button} aria-label="search" onClick={search}>
+                    <IconButton color="primary" className={classes.button} aria-label="search" onClick={searchButtonSubmitHandle}>
                         <SearchIcon />
                     </IconButton>
                     <List component="nav" aria-label="agendaList">
