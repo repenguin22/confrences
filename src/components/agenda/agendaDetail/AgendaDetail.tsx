@@ -4,9 +4,6 @@ import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import ReactGA from 'react-ga';
 
-/** firebase */
-import * as firebase from 'firebase/app';
-
 /** Custom Components */
 import Header from '../../header/Header';
 import AgendaDetailTheme from './AgendaDetailTheme';
@@ -22,10 +19,6 @@ import { useVoteCreate, ResultedCodeVariation as voteCreateResultedCodeVariation
 import { AllAgendaState } from '../../../store/agenda/set/types';
 import { NoticeState } from '../../../store/notice/types';
 
-
-/** util */
-import convertFormat from '../../../utils/convertFormat';
-
 /** model */
 import { CreateVoteForm } from '../../../store/agenda/put/types';
 
@@ -35,6 +28,9 @@ import validation from '../../../utils/validation';
 /** Material UI Components */
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import Card from '@material-ui/core/Card';
+import Box from '@material-ui/core/Box';
+import CardContent from '@material-ui/core/CardContent';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import Dialog from '@material-ui/core/Dialog';
@@ -70,7 +66,11 @@ const useStyles = makeStyles((theme: Theme) => ({
         right: theme.spacing(1),
         bottom: theme.spacing(1),
         zIndex: 1,
-    }
+    },
+    card: {
+        maxWidth: '100%',
+        marginTop: theme.spacing(2),
+    },
 }));
 
 /** Form limit boundary value */
@@ -313,6 +313,9 @@ const AgendaDetail: FC = () => {
 
     // Function to draw voting button
     const renderFloatButton = () => {
+        if (!agendaDetail.isOpen || agendaDetail.isClose) {
+            return null;
+        }
         return (
             <Fab color="primary" aria-label="add" className={classes.fab} onClick={() => floatButtonClick()}>
                 <AddIcon />
@@ -326,6 +329,25 @@ const AgendaDetail: FC = () => {
         }
         return null;
     };
+
+    if (!agendaDetail.isOpen && !getAgendaLoading && getAgendaError === '' && agendaDetail.subject !== '') {
+        return (
+            <React.Fragment>
+                <Header />
+                {renderLoadProgressBar()}
+                {renderCustomSnackBar()}
+                <Container maxWidth="xl">
+                    <Card className={classes.card}>
+                        <CardContent>
+                            <Box textAlign="center" m={1} fontSize={20}>
+                                まだ投票できません
+                            </Box>
+                        </CardContent>
+                    </Card>
+                </Container>
+            </React.Fragment>
+        );
+    }
 
     return (
         <React.Fragment>

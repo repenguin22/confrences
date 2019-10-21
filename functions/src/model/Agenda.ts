@@ -14,7 +14,9 @@ export interface Agenda {
     choice4: string;
     choice4Count: number;
     openDate: Date;
+    isOpen: boolean;
     closeDate: Date;
+    isClose: boolean;
     favoriteCount: number;
     createUserId: string;
     createUserName: string;
