@@ -76,7 +76,9 @@ module.exports = functions.https.onCall(async (data: any, context: any) => {
         agenda.choice3 = data.choice3;
         agenda.choice4 = data.choice4;
         agenda.openDate = admin.firestore.Timestamp.fromDate(new Date('2000')).toDate();
-        agenda.closeDate = admin.firestore.Timestamp.fromDate(new Date('9999')).toDate();
+        let closeDate = new Date(admin.firestore.Timestamp.now().toDate());
+        closeDate.setMonth(closeDate.getMonth() + 1);
+        agenda.closeDate = admin.firestore.Timestamp.fromDate(closeDate).toDate();
         agenda.favoriteCount = 0;
         agenda.createUserId = context.auth.uid;
         agenda.createUserName = data.displayName;

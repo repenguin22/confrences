@@ -70,7 +70,7 @@ const AgendaDetailTheme: FC<AgendaDetailThemeProps> = ({ agendaDetail }) => {
                 <CardHeader
                     avatar={renderAvatar()}
                     title={agendaDetail.subject.replace(/\\n/g, '\n')}
-                    subheader={`${cnvFmt.convertYMD(agendaDetail.createdAt)} 作成者: ${agendaDetail.createUserName}`}
+                    subheader={`${cnvFmt.convertYMD(agendaDetail.createdAt)} 作成者: ${agendaDetail.createUserName}   投票締め切り日：${cnvFmt.convertYMD(agendaDetail.closeDate)}`}
                     style={{ whiteSpace: 'pre-line' }}
                 />
                 <CardContent>

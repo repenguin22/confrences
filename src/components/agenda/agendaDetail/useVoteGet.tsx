@@ -32,6 +32,7 @@ export const useVoteGet = () => {
                 querySnapshot.forEach(doc => {
                     resVoteCreateUserRefAry.push(doc.data().createUser);
                     const tmpVoteObj: Vote = {
+                        agendaId: doc.data().agendaId,
                         id: doc.data().id,
                         choice: doc.data().choice,
                         reason: doc.data().reason,

@@ -19,7 +19,9 @@ export interface Agenda {
     choice4: string;
     choice4Count: number;
     openDate: Date;
+    isOpen: boolean;
     closeDate: Date;
+    isClose: boolean;
     favoriteCount: number;
     createUserId: string;
     createUserName: string;
@@ -30,6 +32,7 @@ export interface Agenda {
 }
 
 export interface Vote {
+    agendaId: string;
     id: string;
     choice: string;
     reason: string;

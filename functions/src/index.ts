@@ -11,6 +11,7 @@ const funcs = {
     createAgenda: './funcs/createAgenda',
     createVote: './funcs/createVote',
     searchAgenda: './funcs/searchAgenda',
+    populerAgenda: './funcs/populerAgenda'
 };
 
 const loadFunctions = (funcsObj: any) => {

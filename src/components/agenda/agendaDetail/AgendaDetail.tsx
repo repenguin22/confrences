@@ -4,6 +4,9 @@ import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import ReactGA from 'react-ga';
 
+/** firebase */
+import * as firebase from 'firebase/app';
+
 /** Custom Components */
 import Header from '../../header/Header';
 import AgendaDetailTheme from './AgendaDetailTheme';
@@ -18,6 +21,10 @@ import { useVoteCreate, ResultedCodeVariation as voteCreateResultedCodeVariation
 /** action */
 import { AllAgendaState } from '../../../store/agenda/set/types';
 import { NoticeState } from '../../../store/notice/types';
+
+
+/** util */
+import convertFormat from '../../../utils/convertFormat';
 
 /** model */
 import { CreateVoteForm } from '../../../store/agenda/put/types';
@@ -305,11 +312,13 @@ const AgendaDetail: FC = () => {
     );
 
     // Function to draw voting button
-    const renderFloatButton = (
-        <Fab color="primary" aria-label="add" className={classes.fab} onClick={() => floatButtonClick()}>
-            <AddIcon />
-        </Fab>
-    );
+    const renderFloatButton = () => {
+        return (
+            <Fab color="primary" aria-label="add" className={classes.fab} onClick={() => floatButtonClick()}>
+                <AddIcon />
+            </Fab >
+        );
+    };
 
     const renderCustomSnackBar = () => {
         if (notice.target === location.pathname || notice.target === 'all') {
@@ -320,7 +329,7 @@ const AgendaDetail: FC = () => {
 
     return (
         <React.Fragment>
-            {renderFloatButton}
+            {renderFloatButton()}
             {renderVoteDialog}
             <Header />
             {renderLoadProgressBar()}

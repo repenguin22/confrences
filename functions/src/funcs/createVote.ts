@@ -26,6 +26,7 @@ module.exports = functions.https.onCall(async (data, context) => {
     let generateId = getRandomId(agendaId);
 
     const vote: Vote = {
+        agendaId: '',
         id: '',
         choice: '',
         reason: '',
@@ -46,6 +47,7 @@ module.exports = functions.https.onCall(async (data, context) => {
         console.info(data);
         let batch = admin.firestore().batch();
         let voteRef = admin.firestore().collection('agenda').doc(agendaId).collection('vote').doc(generateId);
+        vote.agendaId = agendaId;
         vote.id = generateId;
         vote.choice = data.choice;
         let resaon = data.reason.replace(/\r?\n/g, '\n');

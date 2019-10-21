@@ -1,4 +1,5 @@
 export interface Vote {
+    agendaId: string;
     id: string;
     choice: string;
     reason: string;

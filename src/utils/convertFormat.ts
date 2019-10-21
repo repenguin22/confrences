@@ -6,6 +6,7 @@ import { Agenda, Vote } from '../store/agenda/set/types';
  */
 class convertFormat {
     convertYMD(_timestamp: any): string {
+        console.log(_timestamp);
         var _d = _timestamp ? new Date(_timestamp * 1000) : new Date();
         var Y = _d.getFullYear();
         var m = ('0' + (_d.getMonth() + 1)).slice(-2);
