@@ -74,7 +74,7 @@ const AgendaListNew: FC = () => {
         let pageNum = 0;
         if (urlMap && Array.isArray(agendaList)) {
             q = cnvFmt.convertSearchWord(urlMap);
-            setSearchWord(q);
+            setSearchWord(decodeURI(q));
             isPageNumCorrect = cnvFmt.isPageParamsCorrect(urlMap, agendaList, limit);
             if (isPageNumCorrect) {
                 pageNum = cnvFmt.convertPageParseInt(urlMap);

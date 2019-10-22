@@ -53,6 +53,11 @@ module.exports = functions.https.onCall(async (data: any, context: any) => {
         if (!context.auth || !context.auth.uid) {
             throw new functions.https.HttpsError('unauthenticated', 'User is not authenticated.');
         }
+
+        if (data.subject === null || data.subject === '' || data.overview === null || data.overview === '') {
+            throw new Error('data invalid');
+        }
+
         // 一括書き込みを実施する
         console.log(data);
         let batch = admin.firestore().batch();
