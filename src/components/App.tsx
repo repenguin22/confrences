@@ -21,7 +21,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 
 const App: FC = () => {
     firebase.initializeApp(firebaseConfig);
-    ReactGA.initialize('UA-150033688-2');
+    ReactGA.initialize('');
     return (
         <div>
             <CssBaseline />
